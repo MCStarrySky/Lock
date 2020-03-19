@@ -1,0 +1,12 @@
+name: Lock
+version: ${project.version}
+main: org.sct.lock.Lock
+api-version: "1.13"
+description: "自动收费门"
+depend: [Vault,PluginCore]
+commands:
+  lock:
+    description: "插件主命令"
+    usage: "/lock"
+    aliases: [locks]
+    permission: none

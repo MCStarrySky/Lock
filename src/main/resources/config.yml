@@ -1,0 +1,55 @@
+#配置文件
+Setting:
+  Language: zh_CN
+  #是否禁止非玩家打开收费锁(true禁止)
+  IsOtherAllowedOpen: true
+  #是否禁止非玩家破坏收费锁(true禁止)
+  IsOtherAllowedBreak: true
+  #允许开启的世界
+  Worlds:
+    - world
+    - world_the_end
+  #允许使用的门类型
+  DoorType:
+    - IRON_DOOR
+  #允许使用的牌子类型
+  SignType:
+    - OAK_SIGN
+    - SIGN
+  #是否启用纳税
+  TaxAllowed: true
+  #进门的间隔(单位:毫秒)
+  EnterDelay: 1000
+  #如果启用税收，比率是(0.05代表5%)
+  TaxPercent: 0.05
+  #是否启用VIP(填写内容视为启用，不填写("")视为禁用)
+  VipAllowed: "lock.vip"
+  #如果启用VIP，是否允许免税特权
+  TaxCancelable: true
+  #是否禁用红石激活
+  BanRedstoneActive: true
+  #收费锁第一行标识(大小写不敏感)
+  LockSymbol: "lock"
+  #收费门被安装后显示的信息
+  SymbolReplace: "&c[自动收费门]"
+  #收费门第二行收费信息
+  Charge: "&b&l花费: &e&l"
+  #收费门第三行进入标识(大小写不敏感)
+  FlagEnter: "进"
+  #收费门第三行离开标识(大小写不敏感)
+  FlagLeave: "出"
+  #收费门第三行背包为空标识(大小写不敏感)
+  FlagEmpty: "空"
+  #收费门第三行钱数标识(大小写不敏感)
+  FlagMoney: "钱"
+  #收费门第三行药水效果标识(大小写不敏感)
+  FlagEffect: "效"
+  #收费门被安装后显示的第三行替换信息
+  EnterReplace: "&a[进]"
+  LeaveReplace: "&c[出]"
+  EmptyReplace: "&b[空]"
+  MoneyReplace: "&6[钱%needmoney]"
+  EffectReplace: "&2[效]"
+
+
+
