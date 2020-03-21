@@ -19,7 +19,8 @@ import org.sct.plugincore.util.plugin.FileUpdate;
  */
 public final class Lock extends JavaPlugin {
 
-    @Getter private static LockData lockData;
+    @Getter
+    private static LockData lockData;
     private static Lock instance;
 
     @Override
@@ -33,7 +34,8 @@ public final class Lock extends JavaPlugin {
         LockData.getPool().submit(() -> {
             FileUpdate.update(instance, "config.yml", getDataFolder().getPath());
             FileUpdate.update(instance, getConfig().getString(ConfigType.SETTING_LANGUAGE.getPath()) + ".yml", getDataFolder().getPath());
-            CheckUpdate.check(Bukkit.getConsoleSender(), instance);});
+            CheckUpdate.check(Bukkit.getConsoleSender(), instance);
+        });
         saveDefaultConfig();
         Bukkit.getPluginCommand("lock").setExecutor(new CommandHandler());
         getServer().getConsoleSender().sendMessage("      ___       ___           ___           ___     ");

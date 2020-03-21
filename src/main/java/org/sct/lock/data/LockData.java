@@ -1,5 +1,7 @@
 package org.sct.lock.data;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -15,8 +17,8 @@ import java.util.concurrent.*;
 public class LockData {
 
     static {
-        LocationPlayer = new HashMap<>();
-        PlayerLocation = new HashMap<>();
+        PlayerDoorLocation = HashBiMap.create();
+        PlayerSignLocation = HashBiMap.create();
         PlayerisSneak = new HashMap<>();
         PlayerSign = new HashMap<>();
         PlayerBlock = new HashMap<>();
@@ -29,11 +31,11 @@ public class LockData {
         LockData.addStatus.put("door", false);
     }
 
-    /*牌子坐标-玩家*/
-    @Getter private static Map<Location, Player> LocationPlayer;
+    /*玩家-牌子坐标*/
+    @Getter private static BiMap<Player, Location> PlayerSignLocation;
 
     /*玩家-门坐标*/
-    @Getter private static Map<Player, Location> PlayerLocation;
+    @Getter private static BiMap<Player, Location> PlayerDoorLocation;
 
     /*玩家潜行的状态*/
     @Getter private static Map<Player, Boolean> PlayerisSneak;

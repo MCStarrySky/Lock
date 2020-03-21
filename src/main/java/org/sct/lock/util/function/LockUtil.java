@@ -6,11 +6,15 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.sct.lock.Lock;
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
+import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Config;
+import org.sct.lock.file.Lang;
 import org.sct.plugincore.util.BasicUtil;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,10 +43,10 @@ public class LockUtil {
             if (e.getBlockFace() == BlockFace.EAST) {
                 lt = new Location(world, X + 1, Y, Z);
             }
-            /*存入牌子坐标-玩家*/
-            LockData.getLocationPlayer().put(lt, e.getPlayer());
+            /*存入玩家-牌子坐标*/
+            LockData.getPlayerSignLocation().put(e.getPlayer(),lt);
             /*存入玩家-门坐标*/
-            LockData.getPlayerLocation().put(e.getPlayer(), new Location(e.getPlayer().getWorld(), X, LowY, Z));
+            LockData.getPlayerDoorLocation().put(e.getPlayer(), new Location(e.getPlayer().getWorld(), X, LowY, Z));
         }
     }
 
@@ -136,6 +140,37 @@ public class LockUtil {
         }
         moneyDetail.put(symbol, access);
         return moneyDetail;
+    }
+
+    public static boolean addStatus(PlayerInteractEvent e) {
+        List<String> signList = Config.getStringList(ConfigType.SETTING_SIGNTYPE);
+        List<String> doorList = Config.getStringList(ConfigType.SETTING_DOORTYPE);
+
+        if (LockData.getAddStatus().get("sign")) {
+            String type = e.getClickedBlock().getLocation().getBlock().getType().toString();
+            if (!type.contains("WALL_")) {
+                e.getPlayer().sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_INVALIDTYPE), "%type", "SIGN")));
+                return true;
+            }
+
+            signList.add(type);
+            signList.add(type.replace("WALL_", ""));
+            Config.setStringList(ConfigType.SETTING_SIGNTYPE, signList);
+            Lock.getInstance().saveConfig();
+            LockData.getAddStatus().put("sign", false);
+            e.getPlayer().sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPESUCCESS), "%type", "SIGN")));;
+            e.setCancelled(true);
+            return true;
+        } else if (LockData.getAddStatus().get("door")) {
+            doorList.add(e.getClickedBlock().getLocation().getBlock().getType().toString());
+            Config.setStringList(ConfigType.SETTING_DOORTYPE, doorList);
+            Lock.getInstance().saveConfig();
+            LockData.getAddStatus().put("door", false);
+            e.getPlayer().sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPESUCCESS), "%type", "DOOR")));;
+            e.setCancelled(true);
+            return true;
+        }
+        return false;
     }
 
 }

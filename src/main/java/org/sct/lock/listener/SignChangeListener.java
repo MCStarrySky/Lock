@@ -5,13 +5,12 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
-
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.file.Config;
-import org.sct.plugincore.util.BasicUtil;
 import org.sct.lock.util.function.LocationUtil;
 import org.sct.lock.util.function.LockUtil;
+import org.sct.plugincore.util.BasicUtil;
 
 import java.util.Map;
 
@@ -27,12 +26,12 @@ public class SignChangeListener implements Listener {
         Location lt = e.getBlock().getLocation();
         boolean cancel = true;
 
-        if (LockData.getPlayerLocation().get(e.getPlayer()) == null) {
+        if (LockData.getPlayerDoorLocation().get(e.getPlayer()) == null) {
             return;
         }
 
         for (String doors : Config.getStringList(ConfigType.SETTING_DOORTYPE)) {
-            if (LockData.getPlayerLocation().get(e.getPlayer()).getBlock().getType() == Material.getMaterial(doors)) {
+            if (LockData.getPlayerDoorLocation().get(e.getPlayer()).getBlock().getType() == Material.getMaterial(doors)) {
                 cancel = false;
             }
         }
@@ -41,7 +40,7 @@ public class SignChangeListener implements Listener {
             return;
         }
 
-        if (e.getPlayer() == LockData.getLocationPlayer().get(lt)) {
+        if (e.getPlayer() == LockData.getPlayerSignLocation().inverse().get(lt)) {
             if (e.getLine(0).equalsIgnoreCase(Config.getString(ConfigType.SETTING_LOCKSYMBOL)) && !e.getLine(1).equalsIgnoreCase("")) {
 
                 /*如果世界不匹配,返回*/
@@ -96,8 +95,8 @@ public class SignChangeListener implements Listener {
 
                 e.setLine(2, buffer.toString());
             }
-            LockData.getLocationPlayer().remove(lt);
-            LockData.getPlayerLocation().remove(e.getPlayer());
+            LockData.getPlayerSignLocation().remove(e.getPlayer());
+            LockData.getPlayerDoorLocation().remove(e.getPlayer());
         }
     }
 }
