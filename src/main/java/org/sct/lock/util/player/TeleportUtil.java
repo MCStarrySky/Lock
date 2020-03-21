@@ -11,7 +11,7 @@ import org.sct.plugincore.util.BasicUtil;
 
 
 /**
- * @author icestar
+ * @author LovesAsuna
  */
 public class TeleportUtil {
     private static Block sign,block;

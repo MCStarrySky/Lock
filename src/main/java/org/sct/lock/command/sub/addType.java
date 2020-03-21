@@ -9,7 +9,7 @@ import org.sct.plugincore.util.BasicUtil;
 import org.sct.plugincore.util.function.SubCommand;
 
 /**
- * @author icestar
+ * @author LovesAsuna
  * @date 2020/2/15 20:29
  */
 
