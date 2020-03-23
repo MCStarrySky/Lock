@@ -88,9 +88,8 @@ public class LockUtil {
         }
     }
 
-    public static String getRestriction(Block block) {
-        Sign sign = (Sign) block.getState();
-        String orign = sign.getLine(2);
+    public static String getConditons(Block block) {
+        String orign = SIgnProcessUtil.getHoverTextAPI().getText(block.getLocation());
         String empty = BasicUtil.convert(Config.getString(ConfigType.SETTING_EMPTYREPLACE));
         String money = BasicUtil.convert(Config.getString(ConfigType.SETTING_FLAGMONEY));
         String effect = BasicUtil.convert(Config.getString(ConfigType.SETTING_EFFECTREPLACE));
