@@ -28,7 +28,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
     compileOnly 'com.github.LovesAsuna:VaultAPI:-SNAPSHOT'
     compileOnly 'com.github.LovesAsuna:PluginCore:-SNAPSHOT'
-    compileOnly files('E:/work/1.15.2test/cache/patched_1.15.2.jar')
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 }
 

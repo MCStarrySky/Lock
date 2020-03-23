@@ -3,6 +3,7 @@ package org.sct.lock.util.function;
 import org.bukkit.Location;
 import org.sct.plugincore.util.function.StackTrace;
 import org.sct.plugincore.util.reflectutil.Reflections;
+import org.sct.plugincore.util.reflectutil.VersionChecker;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -54,7 +55,12 @@ public class HoverTextAPI {
             ChatComponentText = reflections.getMinecraftClass("ChatComponentText");
             EnumHoverAction = getAnyMineCraftEnum();
             getHandle = craftWorld.getDeclaredMethod("getHandle");
-            getTileEntity = worldServer.getDeclaredMethod("getTileEntity", BlockPosition, boolean.class);
+
+            if (VersionChecker.Version.getCurrent().isEqualOrHigher(VersionChecker.Version.v1_13_R3)) {
+                getTileEntity = worldServer.getDeclaredMethod("getTileEntity", BlockPosition, boolean.class);
+            } else {
+                getTileEntity = worldServer.getDeclaredMethod("getTileEntity", BlockPosition);
+            }
             getTileEntity.setAccessible(true);
             getChatModifier = IChatBaseComponent.getDeclaredMethod("getChatModifier");
             getChatModifier.setAccessible(true);
