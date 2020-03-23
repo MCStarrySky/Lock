@@ -19,7 +19,7 @@ Setting:
   #是否启用纳税
   TaxAllowed: true
   #进门的间隔(单位:毫秒)
-  EnterDelay: 1000
+  EnterDelay: 3000
   #如果启用税收，比率是(0.05代表5%)
   TaxPercent: 0.05
   #是否启用VIP(填写内容视为启用，不填写("")视为禁用)
