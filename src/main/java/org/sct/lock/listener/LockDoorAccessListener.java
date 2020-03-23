@@ -4,16 +4,15 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.enumeration.LangType;
 import org.sct.lock.event.PlayerAccessLockDoorEvent;
 import org.sct.lock.file.Config;
 import org.sct.lock.file.Lang;
-import org.sct.plugincore.util.BasicUtil;
 import org.sct.lock.util.function.LockUtil;
 import org.sct.lock.util.player.InventoryUtil;
 import org.sct.lock.util.player.TeleportUtil;
+import org.sct.plugincore.util.BasicUtil;
 import org.sct.plugincore.util.player.EcoUtil;
 
 import java.util.Map;
@@ -47,7 +46,7 @@ public class LockDoorAccessListener implements Listener {
             }
         }
 
-        String restriction = LockUtil.getRestriction(e.getBlock());
+        String conditons = LockUtil.getConditons(e.getBlock());
 
         if ("enter".equalsIgnoreCase(status)) {
             if (e.getPayer().getName().equals(e.getOwner().getName())) {
@@ -55,15 +54,15 @@ public class LockDoorAccessListener implements Listener {
                 return;
             }
 
-            if (!restriction.isEmpty()) {
-                if (restriction.contains("1")) {
+            if (!conditons.isEmpty()) {
+                if (conditons.contains("1")) {
                     if (!InventoryUtil.isInvEmpty(e.getPayer())) {
                         e.getPayer().sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYNOTEMPTYINV)));
                         return;
                     }
                 }
 
-                if (restriction.contains("2")) {
+                if (conditons.contains("2")) {
                     String line = BasicUtil.remove(((Sign) e.getBlock().getState()).getLine(2));
                     int money = BasicUtil.ExtraceInt(line);
                     int currentMoney = (int) EcoUtil.get(e.getPayer());
@@ -76,7 +75,7 @@ public class LockDoorAccessListener implements Listener {
                     }
                 }
 
-                if (restriction.contains("3")) {
+                if (conditons.contains("3")) {
                     if (!e.getPayer().getActivePotionEffects().isEmpty()) {
                         e.getPayer().sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYHAVEEFFECT)));
                         return;
