@@ -58,14 +58,15 @@ public class HoverTextAPI {
 
             if (VersionChecker.Version.getCurrent().isEqualOrHigher(VersionChecker.Version.v1_13_R3)) {
                 getTileEntity = worldServer.getDeclaredMethod("getTileEntity", BlockPosition, boolean.class);
+                getHoverEvent = ChatModifier.getDeclaredMethod("getHoverEvent");
             } else {
                 getTileEntity = worldServer.getDeclaredMethod("getTileEntity", BlockPosition);
+                getHoverEvent = ChatModifier.getDeclaredMethod("i");
             }
             getTileEntity.setAccessible(true);
             getChatModifier = IChatBaseComponent.getDeclaredMethod("getChatModifier");
             getChatModifier.setAccessible(true);
             setChatHoverable = ChatModifier.getDeclaredMethod("setChatHoverable", ChatHoverable);
-            getHoverEvent = ChatModifier.getDeclaredMethod("getHoverEvent");
             b = ChatHoverable.getDeclaredMethod("b");
 
             BlockPositionConstructor = BlockPosition.getDeclaredConstructor(int.class, int.class, int.class);
@@ -130,7 +131,13 @@ public class HoverTextAPI {
         try {
             Object worldServer = getHandle.invoke(location.getWorld());
             Object blockPosition = BlockPositionConstructor.newInstance(x, y, z);
-            Object tileEntitySign = getTileEntity.invoke(worldServer, blockPosition, true);
+            Object tileEntitySign = null;
+            if (VersionChecker.Version.getCurrent().isEqualOrHigher(VersionChecker.Version.v1_13_R3)) {
+                tileEntitySign = getTileEntity.invoke(worldServer, blockPosition, true);
+            } else {
+                tileEntitySign = getTileEntity.invoke(worldServer, blockPosition);
+            }
+
 
             if (this.tileEntitySign.isInstance(tileEntitySign)) {
                 Object line = ((Object[]) lines.get(tileEntitySign))[0];
