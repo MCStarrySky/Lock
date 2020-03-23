@@ -1,12 +1,10 @@
 package org.sct.lock.util.player;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
-
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.file.Config;
@@ -59,20 +57,21 @@ public class CheckUtil {
 
         //玩家交互的门(忽视高度)
         if (player != null) {
-            LockData.getPlayerBlock().put(player,door);
+            LockData.getPlayerBlock().put(player, door);
         }
 
         //存入玩家交互的门上方的牌子
         if (player != null) {
-            LockData.getPlayerSign().put(player,new Location(player.getWorld(),x,y,z).getBlock());
+            LockData.getPlayerSign().put(player, new Location(player.getWorld(), x, y, z).getBlock());
         }
     }
 
     private static void setFourSign(Block aboveDoor) {
-        FourSign = new Block[]{aboveDoor.getRelative(1,0,0),
-                aboveDoor.getRelative(-1,0,0),
-                aboveDoor.getRelative(0,0,1),
-                aboveDoor.getRelative(0,0,-1)
+        FourSign = new Block[]{
+                aboveDoor.getRelative(1, 0, 0),
+                aboveDoor.getRelative(-1, 0, 0),
+                aboveDoor.getRelative(0, 0, 1),
+                aboveDoor.getRelative(0, 0, -1)
         };
     }
 }

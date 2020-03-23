@@ -24,6 +24,7 @@ public enum LangType {
     LANG_ADDTYPE("Language.addType"),
     LANG_INVALIDTYPE("Language.InvalidType"),
     LANG_ADDTYPESUCCESS("Language.AddTypeSuccess"),
+    LANG_DoorDetail("Language.DoorDetail"),
     LANG_BANREDSTONE("Language.BanRedstone");
 
     @Getter String path;
