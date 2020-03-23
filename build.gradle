@@ -28,9 +28,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
     compileOnly 'com.github.LovesAsuna:VaultAPI:-SNAPSHOT'
     compileOnly 'com.github.LovesAsuna:PluginCore:-SNAPSHOT'
-    compileOnly files('E:/work/1.8test/spigot.jar')
-    compileOnly files('E:/work/1.12.2test/Spigot.jar')
-    compileOnly files('E:/work/1.14.4test/cache/patched_1.14.4.jar')
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 }
 
