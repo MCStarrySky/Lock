@@ -11,7 +11,7 @@ import org.sct.lock.file.Config;
 import org.sct.lock.file.Lang;
 import org.sct.lock.util.function.LockUtil;
 import org.sct.lock.util.player.InventoryUtil;
-import org.sct.lock.util.player.TeleportUtil;
+import org.sct.lock.util.player.TeleportAPI;
 import org.sct.plugincore.util.BasicUtil;
 import org.sct.plugincore.util.player.EcoUtil;
 
@@ -30,11 +30,9 @@ public class LockDoorAccessListener implements Listener {
         Sign sign = (Sign) e.getBlock().getState();
         int charge = BasicUtil.ExtraceInt(sign.getLine(1).trim());
 
-        /*设置状态数据*/
-        TeleportUtil.getData(e.getPayer());
+        TeleportAPI teleportAPI = e.getTeleportAPI();
 
-        /*如果执行传送并返回进出状态，以此来进行扣费操作*/
-        String status = TeleportUtil.getPlayerFace(e.getPayer());
+        String status = teleportAPI.getPlayerFace(e.getPayer());
 
         /*收费门指定允许的方向*/
         String direction = LockUtil.getDirection(e.getBlock());
@@ -50,7 +48,7 @@ public class LockDoorAccessListener implements Listener {
 
         if ("enter".equalsIgnoreCase(status)) {
             if (e.getPayer().getName().equals(e.getOwner().getName())) {
-                TeleportUtil.Tp("enter", e.getPayer());
+                teleportAPI.Tp("enter", e.getPayer());
                 return;
             }
 
@@ -89,7 +87,7 @@ public class LockDoorAccessListener implements Listener {
                 return;
             }
 
-            TeleportUtil.Tp("enter", e.getPayer());
+            teleportAPI.Tp("enter", e.getPayer());
             /*payer付钱部分*/
 
             /*如果owner是vip或权限未设置*/
@@ -105,7 +103,7 @@ public class LockDoorAccessListener implements Listener {
 
             e.getPayer().sendMessage(BasicUtil.replace(Lang.getString(LangType.LANG_ENTER),"%charge", charge));
         } else {
-            TeleportUtil.Tp("leave", e.getPayer());
+            teleportAPI.Tp("leave", e.getPayer());
         }
 
     }

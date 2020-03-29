@@ -3,28 +3,23 @@ package org.sct.lock.util.player;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
-
 import org.sct.lock.data.LockData;
-import org.sct.plugincore.util.BasicUtil;
 
 
 /**
  * @author LovesAsuna
  */
-public class TeleportUtil {
-    private static Block sign,block;
-    private static Sign Sign;
-    private static int charge;
-    private static double PlayerX,PlayerY,PlayerZ,BlockX,BlockZ;
-    private static String blockFace;
+public class TeleportAPI {
+    private Block sign,block;
+    private double PlayerX,PlayerY,PlayerZ,BlockX,BlockZ;
+    private String blockFace;
 
     /**
      * @param player 被tp的玩家(payer)
      * @return 进出状态
      */
-    public static String getPlayerFace(Player player) {
+    public String getPlayerFace(Player player) {
 
         /*判断进出状态*/
         String status = null;
@@ -58,7 +53,7 @@ public class TeleportUtil {
         return status;
     }
 
-    public static void Tp(String status, Player player) {
+    public void Tp(String status, Player player) {
         /*传送部分*/
         if (status.equalsIgnoreCase("enter")) {
             if (blockFace.equalsIgnoreCase("north")) {
@@ -101,22 +96,20 @@ public class TeleportUtil {
         }
     }
 
-    public static void getData(Player player) {
+    public void getData(Player player) {
         sign = LockData.getPlayerSign().get(player);
-        Sign = (Sign) sign.getState();
-        charge = BasicUtil.ExtraceInt(Sign.getLine(1).trim());
         block = LockData.getPlayerBlock().get(player);
 
         /*通过blockdata获取牌子朝向*/
         //blockFace = sign.getBlockData().getAsString().split(",")[0].split("=")[1];
 
-        if (getBlockFace(sign.getRelative(0,0,1), block)) {
+        if (getBlockFace(sign.getRelative(0,0,1))) {
             blockFace = "north";
-        } else if (getBlockFace(sign.getRelative(0,0,-1), block)) {
+        } else if (getBlockFace(sign.getRelative(0,0,-1))) {
             blockFace = "south";
-        } else if (getBlockFace(sign.getRelative(1,0,0), block)) {
+        } else if (getBlockFace(sign.getRelative(1,0,0))) {
             blockFace = "west";
-        } else if (getBlockFace(sign.getRelative(-1,0,0), block)) {
+        } else if (getBlockFace(sign.getRelative(-1,0,0))) {
             blockFace = "east";
         }
 
@@ -127,7 +120,7 @@ public class TeleportUtil {
         BlockZ = block.getLocation().getBlockZ();
     }
 
-    private static boolean getBlockFace(Block signRelative, Block door) {
+    private boolean getBlockFace(Block signRelative) {
         if (signRelative.getType() == Material.AIR) {
             return false;
         }

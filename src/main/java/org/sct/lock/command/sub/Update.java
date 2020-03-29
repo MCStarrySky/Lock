@@ -1,15 +1,16 @@
 package org.sct.lock.command.sub;
 
+import com.google.common.collect.Maps;
 import org.bukkit.command.CommandSender;
 import org.sct.lock.Lock;
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Lang;
-import org.sct.plugincore.util.function.SubCommand;
+import org.sct.plugincore.util.function.command.SubCommand;
 import org.sct.plugincore.util.plugin.DownloadUtil;
-import org.sct.plugincore.util.plugin.GetUpdateDetail;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class Update implements SubCommand {
 
@@ -36,7 +37,7 @@ public class Update implements SubCommand {
             } else if (args[1].equalsIgnoreCase("version")) {
                 LockData.getPool().submit(() -> {
                     try {
-                        GetUpdateDetail.get(sender, Lock.getInstance());
+                        Lock.getPluginCoreAPI().getGitHubAPI().getUpdateDetail(sender, Lock.getInstance());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -49,5 +50,12 @@ public class Update implements SubCommand {
             sender.sendMessage(Lang.getString(LangType.LANG_COMMANDERROR));
         }
         return true;
+    }
+
+    @Override
+    public Map<Integer, String[]> getParams() {
+        Map<Integer, String[]> params = Maps.newHashMap();
+        params.put(1, new String[]{"download", "version"});
+        return params;
     }
 }

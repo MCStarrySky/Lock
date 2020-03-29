@@ -18,6 +18,7 @@ import org.sct.lock.file.Lang;
 import org.sct.lock.util.function.LockUtil;
 import org.sct.lock.util.function.SIgnProcessUtil;
 import org.sct.lock.util.player.CheckUtil;
+import org.sct.lock.util.player.TeleportAPI;
 import org.sct.plugincore.util.BasicUtil;
 import org.sct.plugincore.util.function.Inhibition;
 
@@ -34,6 +35,7 @@ public class PlayerInteractListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent e) {
         List<String> signList = Config.getStringList(ConfigType.SETTING_SIGNTYPE);
         List<String> doorList = Config.getStringList(ConfigType.SETTING_DOORTYPE);
+        Player player = e.getPlayer();
 
         if (LockUtil.addStatus(e)) {
             return;
@@ -55,34 +57,48 @@ public class PlayerInteractListener implements Listener {
 
             for (String door : doorList) {
                 // 如果玩家正在潜行
-                if (LockData.getPlayerisSneak().get(e.getPlayer()) == null || !LockData.getPlayerisSneak().get(e.getPlayer())) {
+                if (LockData.getPlayerisSneak().get(player) == null || !LockData.getPlayerisSneak().get(player)) {
                     return;
                 }
 
                 if (e.getClickedBlock().getLocation().getBlock().getType() == Material.getMaterial(door)) {
 
                     /*如果门的上方有自动收费门的牌子,在CheckUtil内存入牌子和方块的位置*/
-                    if (CheckUtil.CheckSign(e.getPlayer(), e.getClickedBlock())) {
+                    if (CheckUtil.CheckSign(player, e.getClickedBlock())) {
+
+                        TeleportAPI teleportAPI = new TeleportAPI();
+
+
+                        /*设置状态数据*/
+                        teleportAPI.getData(player);
+
+                        /*如果执行传送并返回进出状态，以此来进行扣费操作*/
+                        String status = teleportAPI.getPlayerFace(player);
+
+                        if (status.equals("leave")) {
+                            callEvent(player, teleportAPI);
+                            return;
+                        }
 
                         /*事件抑制*/
                         int orignDelay = Config.getInteger(ConfigType.SETTING_ENTERDELAY);
                         long delay = (long) ((double) orignDelay / 50);
-                        boolean inhit = Inhibition.getInhibitStatus(e.getPlayer(), Config.getInteger(ConfigType.SETTING_ENTERDELAY), TimeUnit.MILLISECONDS);
+                        boolean inhit = Inhibition.getInhibitStatus(player, Config.getInteger(ConfigType.SETTING_ENTERDELAY), TimeUnit.MILLISECONDS);
                         Bukkit.getScheduler().runTaskLaterAsynchronously(Lock.getInstance(), () -> {
-                            LockData.getEnsure().put(e.getPlayer(), false);
+                            LockData.getEnsure().put(player, false);
                         }, delay);
-                        LockData.getEnsure().putIfAbsent(e.getPlayer(), false);
+                        LockData.getEnsure().putIfAbsent(player, false);
 
-                        boolean ensure = LockData.getEnsure().get(e.getPlayer());
+                        boolean ensure = LockData.getEnsure().get(player);
                         if (!inhit && !ensure) {
                             /*提示*/
                             showDoorDetail(e, delay / 20);
-                            LockData.getEnsure().put(e.getPlayer(), true);
+                            LockData.getEnsure().put(player, true);
                             return;
                         }
 
                         if (!inhit && ensure) {
-                            Bukkit.getPluginManager().callEvent(new PlayerAccessLockDoorEvent(e.getPlayer(), LockUtil.getOwner(LockData.getPlayerSign().get(e.getPlayer())), LockData.getPlayerSign().get(e.getPlayer())));
+                            callEvent(player, teleportAPI);
                         }
 
                     }
@@ -101,5 +117,12 @@ public class PlayerInteractListener implements Listener {
             detail = BasicUtil.replace(detail, "%second%", String.valueOf(delay));
             player.sendMessage(detail);
         }
+    }
+
+    private void callEvent(Player player, TeleportAPI teleportAPI) {
+        Bukkit.getPluginManager().callEvent(new PlayerAccessLockDoorEvent(player,
+                LockUtil.getOwner(LockData.getPlayerSign().get(player)),
+                teleportAPI,
+                LockData.getPlayerSign().get(player)));
     }
 }

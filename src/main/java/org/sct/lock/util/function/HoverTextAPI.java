@@ -1,7 +1,7 @@
 package org.sct.lock.util.function;
 
 import org.bukkit.Location;
-import org.sct.plugincore.util.function.StackTrace;
+import org.sct.plugincore.util.function.stack.StackTrace;
 import org.sct.plugincore.util.reflectutil.Reflections;
 import org.sct.plugincore.util.reflectutil.VersionChecker;
 

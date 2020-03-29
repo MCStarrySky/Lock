@@ -3,14 +3,17 @@ package org.sct.lock;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.sct.lock.command.CommandHandler;
+import org.sct.lock.command.SubCommandHandler;
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.file.Lang;
 import org.sct.lock.util.ListenerManager;
+import org.sct.plugincore.PluginCore;
+import org.sct.plugincore.PluginCoreAPI;
 import org.sct.plugincore.util.player.EcoUtil;
 import org.sct.plugincore.util.plugin.CheckUpdate;
 import org.sct.plugincore.util.plugin.FileUpdate;
+import org.sct.plugincore.util.plugin.Metrics;
 
 
 /**
@@ -21,13 +24,17 @@ public final class Lock extends JavaPlugin {
 
     @Getter
     private static LockData lockData;
+    @Getter
     private static Lock instance;
+    @Getter
+    private static PluginCoreAPI pluginCoreAPI;
 
     @Override
     public void onEnable() {
         instance = this;
-
+        Metrics metrics = new Metrics(this, 6910);
         lockData = new LockData();
+        pluginCoreAPI = PluginCore.getPluginCoreAPI();
         ListenerManager.register();
         Lang.loadLang();
         EcoUtil.loadVault();
@@ -37,7 +44,7 @@ public final class Lock extends JavaPlugin {
             CheckUpdate.check(Bukkit.getConsoleSender(), instance);
         });
         saveDefaultConfig();
-        Bukkit.getPluginCommand("lock").setExecutor(new CommandHandler());
+        Bukkit.getPluginCommand("lock").setExecutor(new SubCommandHandler(instance, "Lock"));
         getServer().getConsoleSender().sendMessage("      ___       ___           ___           ___     ");
         getServer().getConsoleSender().sendMessage("     /\\__\\     /\\  \\         /\\  \\         /\\__\\");
         getServer().getConsoleSender().sendMessage("    /:/  /    /::\\  \\       /::\\  \\       /:/  /");
@@ -46,8 +53,8 @@ public final class Lock extends JavaPlugin {
         getServer().getConsoleSender().sendMessage(" /:/__/    /:/__/ \\:\\__\\ /:/__/ \\:\\__\\ /:/\\:::::\\__\\");
         getServer().getConsoleSender().sendMessage(" \\:\\  \\    \\:\\  \\ /:/  / \\:\\  \\  \\/__/ \\/_|:|~~|~");
         getServer().getConsoleSender().sendMessage("  \\:\\  \\    \\:\\  /:/  /   \\:\\  \\          |:|  |");
-        getServer().getConsoleSender().sendMessage("    \\:\\__\\    \\::/  /       \\:\\__\\        |:|  |");
-        getServer().getConsoleSender().sendMessage("     \\/__/     \\/__/         \\/__/         \\|__|");
+        getServer().getConsoleSender().sendMessage("   \\:\\__\\    \\::/  /       \\:\\__\\         |:|  |");
+        getServer().getConsoleSender().sendMessage("    \\/__/     \\/__/         \\/__/          \\|__|");
     }
 
     @Override
@@ -55,7 +62,4 @@ public final class Lock extends JavaPlugin {
         getServer().getConsoleSender().sendMessage("§7[§eLock§7]§c插件已被卸载");
     }
 
-    public static Lock getInstance() {
-        return instance;
-    }
 }

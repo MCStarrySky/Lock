@@ -7,6 +7,11 @@ Language:
     - "&62. &bset the price in the second line"
     - "&63. &bset &7(&a&lin&f/&c&lout&7) at the third line(default as two-way)"
     - "&64. &bno need to fill anything at the fouth line"
+  DoorDetail:
+    - "&e──────────────"
+    - "&7▶ &aconditions of door: %conditons% "
+    - "&7▶ &ayou have &c%second%&a seconds to confirm"
+    - "&e──────────────"
   # no permission
   NoPermission: "&7[&eLock&7]&cyou don't have permission to do this"
   # not a player notice

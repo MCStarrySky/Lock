@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.sct.lock.util.player.TeleportAPI;
 
 /**
  * @author alchemy
@@ -22,6 +23,8 @@ public class PlayerAccessLockDoorEvent extends Event {
     OfflinePlayer owner;
     @Getter
     Block block;
+    @Getter
+    TeleportAPI teleportAPI;
 
     /**
      * 构造函数
@@ -30,9 +33,10 @@ public class PlayerAccessLockDoorEvent extends Event {
      * @param owner 收费门的所有者
      * @param block 收费门上面的木牌，用于判断信息
      */
-    public PlayerAccessLockDoorEvent(Player payer, OfflinePlayer owner, Block block) {
+    public PlayerAccessLockDoorEvent(Player payer, OfflinePlayer owner, TeleportAPI teleportAPI, Block block) {
         this.payer = payer;
         this.owner = owner;
+        this.teleportAPI = teleportAPI;
         this.block = block;
     }
 

@@ -2,7 +2,9 @@ package org.sct.lock.command.sub;
 
 import org.bukkit.command.CommandSender;
 import org.sct.lock.Lock;
-import org.sct.plugincore.util.function.SubCommand;
+import org.sct.plugincore.util.function.command.SubCommand;
+
+import java.util.Map;
 
 public class Info implements SubCommand {
     @Override
@@ -13,5 +15,10 @@ public class Info implements SubCommand {
         sender.sendMessage("§7└ §eLink§7:§b https://www.mcbbs.net/thread-932739-1-1.html");
 
         return true;
+    }
+
+    @Override
+    public Map<Integer, String[]> getParams() {
+        return null;
     }
 }

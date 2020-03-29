@@ -1,12 +1,15 @@
 package org.sct.lock.command.sub;
 
+import com.google.common.collect.Maps;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Lang;
 import org.sct.plugincore.util.BasicUtil;
-import org.sct.plugincore.util.function.SubCommand;
+import org.sct.plugincore.util.function.command.SubCommand;
+
+import java.util.Map;
 
 /**
  * @author LovesAsuna
@@ -45,5 +48,12 @@ public class addType implements SubCommand {
             sender.sendMessage(Lang.getString(LangType.LANG_COMMANDERROR));
         }
         return true;
+    }
+
+    @Override
+    public Map<Integer, String[]> getParams() {
+        Map<Integer, String[]> params = Maps.newHashMap();
+        params.put(1, new String[]{"sign", "door"});
+        return params;
     }
 }
