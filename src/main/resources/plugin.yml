@@ -1,5 +1,5 @@
 name: Lock
-version: 1.5.0-Alpha
+version: 1.5.2-Alpha
 main: org.sct.lock.Lock
 api-version: "1.13"
 description: "自动收费门"
