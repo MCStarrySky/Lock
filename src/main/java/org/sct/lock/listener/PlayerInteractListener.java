@@ -15,6 +15,7 @@ import org.sct.lock.enumeration.LangType;
 import org.sct.lock.event.PlayerAccessLockDoorEvent;
 import org.sct.lock.file.Config;
 import org.sct.lock.file.Lang;
+import org.sct.lock.util.function.InteractInhit;
 import org.sct.lock.util.function.LockUtil;
 import org.sct.lock.util.function.SIgnProcessUtil;
 import org.sct.lock.util.player.CheckUtil;
@@ -33,9 +34,15 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+
+        if (!InteractInhit.getInhibitStatus(player, 50)) {
+            return;
+        }
+
         List<String> signList = Config.getStringList(ConfigType.SETTING_SIGNTYPE);
         List<String> doorList = Config.getStringList(ConfigType.SETTING_DOORTYPE);
-        Player player = e.getPlayer();
+
 
         if (LockUtil.addStatus(e)) {
             return;
@@ -50,7 +57,7 @@ public class PlayerInteractListener implements Listener {
                 for (String sign : signList) {
                     Material material = Material.getMaterial(sign);
                     if (e.getItem().getType() == material) {
-                        LockUtil.getLocation(e);
+                        LockUtil.setLocation(e);
                     }
                 }
             }
@@ -68,21 +75,23 @@ public class PlayerInteractListener implements Listener {
 
                         TeleportAPI teleportAPI = new TeleportAPI();
 
-
                         /*设置状态数据*/
                         teleportAPI.getData(player);
 
                         /*如果执行传送并返回进出状态，以此来进行扣费操作*/
-                        String status = teleportAPI.getPlayerFace(player);
-
-                        if (status.equals("leave")) {
+                        TeleportAPI.status s = teleportAPI.getPlayerFace(player);
+                        if (s == TeleportAPI.status.LEAVE) {
+                            if (!InteractInhit.getInhibitStatus(player.getName() + "temp", 5)) {
+                                return;
+                            }
                             callEvent(player, teleportAPI);
                             return;
                         }
 
-                        /*事件抑制*/
+                        /*事件抑制确认*/
                         int orignDelay = Config.getInteger(ConfigType.SETTING_ENTERDELAY);
                         long delay = (long) ((double) orignDelay / 50);
+                        Inhibition.getInhibitStatus(player, Config.getInteger(ConfigType.SETTING_ENTERDELAY), TimeUnit.MILLISECONDS);
                         boolean inhit = Inhibition.getInhibitStatus(player, Config.getInteger(ConfigType.SETTING_ENTERDELAY), TimeUnit.MILLISECONDS);
                         Bukkit.getScheduler().runTaskLaterAsynchronously(Lock.getInstance(), () -> {
                             LockData.getEnsure().put(player, false);
@@ -98,6 +107,9 @@ public class PlayerInteractListener implements Listener {
                         }
 
                         if (!inhit && ensure) {
+                            if (!InteractInhit.getInhibitStatus(player.getName() + "temp", 10)) {
+                                return;
+                            }
                             callEvent(player, teleportAPI);
                         }
 
