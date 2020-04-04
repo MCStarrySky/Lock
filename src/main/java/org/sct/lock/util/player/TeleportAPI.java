@@ -11,88 +11,96 @@ import org.sct.lock.data.LockData;
  * @author LovesAsuna
  */
 public class TeleportAPI {
-    private Block sign,block;
-    private double PlayerX,PlayerY,PlayerZ,BlockX,BlockZ;
+    private Block sign, block;
+    private double PlayerX, PlayerY, PlayerZ, BlockX, BlockZ;
     private String blockFace;
+    private final String N = "north";
+    private final String W = "west";
+    private final String E = "east";
+    private final String S = "south";
 
     /**
      * @param player 被tp的玩家(payer)
      * @return 进出状态
      */
-    public String getPlayerFace(Player player) {
-
+    public status getPlayerFace(Player player) {
         /*判断进出状态*/
-        String status = null;
-        if (blockFace.equalsIgnoreCase("north")) {
+        status s = null;
+        if (blockFace.equalsIgnoreCase(N)) {
             if (PlayerZ < BlockZ) {
-                status = "enter";
+                s = status.ENTER;
             } else {
-                status = "leave";
+                s = status.LEAVE;
             }
-        } else if (blockFace.equalsIgnoreCase("south")) {
+        } else if (blockFace.equalsIgnoreCase(S)) {
             if (PlayerZ > BlockZ) {
-                status = "enter";
+                s = status.ENTER;
             } else {
-                status = "leave";
+                s = status.LEAVE;
             }
-        } else if (blockFace.equalsIgnoreCase("west")) {
+        } else if (blockFace.equalsIgnoreCase(W)) {
             if (PlayerX < BlockX) {
-                status = "enter";
+                s = status.ENTER;
             } else {
-                status = "leave";
+                s = status.LEAVE;
             }
-        } else if (blockFace.equalsIgnoreCase("east")) {
+        } else if (blockFace.equalsIgnoreCase(E)) {
             if (PlayerX > BlockX) {
-                status = "enter";
+                s = status.ENTER;
             } else {
-                status = "leave";
+                s = status.LEAVE;
             }
         }
-
-
-        return status;
+        return s;
     }
 
-    public void Tp(String status, Player player) {
+    public static enum status {
+        ENTER,
+        LEAVE,
+        DOUBLE;
+    }
+
+    public void Tp(status s, Player player) {
         /*传送部分*/
-        if (status.equalsIgnoreCase("enter")) {
-            if (blockFace.equalsIgnoreCase("north")) {
-                BlockZ += 1.5;
-                BlockX += 0.5;
-            }
-            if (blockFace.equalsIgnoreCase("south")) {
-                BlockZ -= 0.5;
-                BlockX += 0.5;
-            }
-            if (blockFace.equalsIgnoreCase("west")) {
-                BlockX += 1.5;
-                BlockZ += 0.5;
-            }
-            if (blockFace.equalsIgnoreCase("east")) {
-                BlockX -= 0.5;
-                BlockZ += 0.5;
-            }
-            player.teleport(new Location(player.getWorld(), BlockX, PlayerY, BlockZ, player.getLocation().getYaw(), player.getLocation().getPitch()));
-
-        } else if (status.equalsIgnoreCase("leave")) {
-            if (blockFace.equalsIgnoreCase("north")) {
-                BlockZ -= 0.5;
-                BlockX += 0.5;
-            }
-            if (blockFace.equalsIgnoreCase("south")) {
-                BlockZ += 1.5;
-                BlockX += 0.5;
-            }
-            if (blockFace.equalsIgnoreCase("west")) {
-                BlockX -= 0.5;
-                BlockZ += 0.5;
-            }
-            if (blockFace.equalsIgnoreCase("east")) {
-                BlockX += 1.5;
-                BlockZ += 0.5;
-            }
-            player.teleport(new Location(player.getWorld(), BlockX, PlayerY, BlockZ, player.getLocation().getYaw(), player.getLocation().getPitch()));
-
+        switch (s) {
+            case ENTER:
+                if (blockFace.equalsIgnoreCase(N)) {
+                    BlockZ += 1.5;
+                    BlockX += 0.5;
+                }
+                if (blockFace.equalsIgnoreCase(S)) {
+                    BlockZ -= 0.5;
+                    BlockX += 0.5;
+                }
+                if (blockFace.equalsIgnoreCase(W)) {
+                    BlockX += 1.5;
+                    BlockZ += 0.5;
+                }
+                if (blockFace.equalsIgnoreCase(E)) {
+                    BlockX -= 0.5;
+                    BlockZ += 0.5;
+                }
+                player.teleport(new Location(player.getWorld(), BlockX, PlayerY, BlockZ, player.getLocation().getYaw(), player.getLocation().getPitch()));
+                break;
+            case LEAVE:
+                if (blockFace.equalsIgnoreCase(N)) {
+                    BlockZ -= 0.5;
+                    BlockX += 0.5;
+                }
+                if (blockFace.equalsIgnoreCase(S)) {
+                    BlockZ += 1.5;
+                    BlockX += 0.5;
+                }
+                if (blockFace.equalsIgnoreCase(W)) {
+                    BlockX -= 0.5;
+                    BlockZ += 0.5;
+                }
+                if (blockFace.equalsIgnoreCase(E)) {
+                    BlockX += 1.5;
+                    BlockZ += 0.5;
+                }
+                player.teleport(new Location(player.getWorld(), BlockX, PlayerY, BlockZ, player.getLocation().getYaw(), player.getLocation().getPitch()));
+                break;
         }
     }
 
@@ -103,14 +111,14 @@ public class TeleportAPI {
         /*通过blockdata获取牌子朝向*/
         //blockFace = sign.getBlockData().getAsString().split(",")[0].split("=")[1];
 
-        if (getBlockFace(sign.getRelative(0,0,1))) {
-            blockFace = "north";
-        } else if (getBlockFace(sign.getRelative(0,0,-1))) {
-            blockFace = "south";
-        } else if (getBlockFace(sign.getRelative(1,0,0))) {
-            blockFace = "west";
-        } else if (getBlockFace(sign.getRelative(-1,0,0))) {
-            blockFace = "east";
+        if (getBlockFace(sign.getRelative(0, 0, 1))) {
+            blockFace = N;
+        } else if (getBlockFace(sign.getRelative(0, 0, -1))) {
+            blockFace = S;
+        } else if (getBlockFace(sign.getRelative(1, 0, 0))) {
+            blockFace = W;
+        } else if (getBlockFace(sign.getRelative(-1, 0, 0))) {
+            blockFace = E;
         }
 
         PlayerX = player.getLocation().getBlockX();
