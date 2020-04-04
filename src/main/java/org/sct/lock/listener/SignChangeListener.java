@@ -18,7 +18,7 @@ public class SignChangeListener implements Listener {
 
     @EventHandler
     public void onSignChange(SignChangeEvent e) {
-        Location lt = e.getBlock().getLocation();
+        Location location = e.getBlock().getLocation();
         boolean cancel = true;
 
         if (LockData.getPlayerDoorLocation().get(e.getPlayer()) == null) {
@@ -36,7 +36,7 @@ public class SignChangeListener implements Listener {
             return;
         }
 
-        if (e.getPlayer() == LockData.getPlayerSignLocation().inverse().get(lt)) {
+        if (e.getPlayer() == LockData.getPlayerSignLocation().inverse().get(location)) {
             SIgnProcessUtil.processSign(e);
         }
     }

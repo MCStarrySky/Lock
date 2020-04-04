@@ -12,6 +12,7 @@ import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Config;
 import org.sct.lock.file.Lang;
+import org.sct.lock.util.player.TeleportAPI;
 import org.sct.plugincore.util.BasicUtil;
 
 import java.util.List;
@@ -22,8 +23,8 @@ import java.util.Map;
  */
 public class LockUtil {
 
-    public static void getLocation(PlayerInteractEvent e) {
-        Location lt = null;
+    public static void setLocation(PlayerInteractEvent e) {
+        Location location = null;
         World world = e.getPlayer().getWorld();
         if (e.getClickedBlock() != null) {
             double X = e.getClickedBlock().getX();
@@ -32,19 +33,19 @@ public class LockUtil {
             double LowY = e.getClickedBlock().getY() - 1;
             //lt为牌子坐标
             if (e.getBlockFace() == BlockFace.NORTH) {
-                lt = new Location(world, X, Y, Z - 1);
+                location = new Location(world, X, Y, Z - 1);
             }
             if (e.getBlockFace() == BlockFace.SOUTH) {
-                lt = new Location(world, X, Y, Z + 1);
+                location = new Location(world, X, Y, Z + 1);
             }
             if (e.getBlockFace() == BlockFace.WEST) {
-                lt = new Location(world, X - 1, Y, Z);
+                location = new Location(world, X - 1, Y, Z);
             }
             if (e.getBlockFace() == BlockFace.EAST) {
-                lt = new Location(world, X + 1, Y, Z);
+                location = new Location(world, X + 1, Y, Z);
             }
             /*存入玩家-牌子坐标*/
-            LockData.getPlayerSignLocation().put(e.getPlayer(),lt);
+            LockData.getPlayerSignLocation().put(e.getPlayer(),location);
             /*存入玩家-门坐标*/
             LockData.getPlayerDoorLocation().put(e.getPlayer(), new Location(e.getPlayer().getWorld(), X, LowY, Z));
         }
@@ -72,17 +73,17 @@ public class LockUtil {
      * @param block 牌子
      * @return String 收费门允许的方向
      */
-    public static String getDirection(Block block) {
+    public static TeleportAPI.status getDirection(Block block) {
         Sign sign = (Sign) block.getState();
         String orign = sign.getLine(2);
         String enter = BasicUtil.convert(Config.getString(ConfigType.SETTING_ENTERREPLACE));
         String leave = BasicUtil.convert(Config.getString(ConfigType.SETTING_LEAVEREPLACE));
         if (orign.contains(enter) && orign.contains(leave)) {
-            return "double";
+            return TeleportAPI.status.DOUBLE;
         } else if (orign.contains(enter)) {
-            return "enter";
+            return TeleportAPI.status.ENTER;
         } else if (orign.contains(leave)) {
-            return "leave";
+            return TeleportAPI.status.LEAVE;
         } else {
             return null;
         }

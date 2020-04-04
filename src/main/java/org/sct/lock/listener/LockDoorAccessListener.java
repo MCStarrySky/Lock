@@ -26,19 +26,18 @@ public class LockDoorAccessListener implements Listener {
 
     @EventHandler
     public void onAccess(PlayerAccessLockDoorEvent e) {
-
         Sign sign = (Sign) e.getBlock().getState();
         int charge = BasicUtil.ExtraceInt(sign.getLine(1).trim());
 
         TeleportAPI teleportAPI = e.getTeleportAPI();
 
-        String status = teleportAPI.getPlayerFace(e.getPayer());
+        TeleportAPI.status s = teleportAPI.getPlayerFace(e.getPayer());
 
         /*收费门指定允许的方向*/
-        String direction = LockUtil.getDirection(e.getBlock());
+        TeleportAPI.status direction = LockUtil.getDirection(e.getBlock());
 
         if (!"double".equals(direction) && !e.getPayer().getName().equals(e.getOwner().getName())) {
-            if (!status.equals(direction)) {
+            if (s != direction) {
                 e.getPayer().sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYDIRECTION)));
                 return;
             }
@@ -46,9 +45,9 @@ public class LockDoorAccessListener implements Listener {
 
         String conditons = LockUtil.getConditons(e.getBlock());
 
-        if ("enter".equalsIgnoreCase(status)) {
+        if (s == TeleportAPI.status.ENTER) {
             if (e.getPayer().getName().equals(e.getOwner().getName())) {
-                teleportAPI.Tp("enter", e.getPayer());
+                teleportAPI.Tp(TeleportAPI.status.ENTER, e.getPayer());
                 return;
             }
 
@@ -87,7 +86,7 @@ public class LockDoorAccessListener implements Listener {
                 return;
             }
 
-            teleportAPI.Tp("enter", e.getPayer());
+            teleportAPI.Tp(TeleportAPI.status.ENTER, e.getPayer());
             /*payer付钱部分*/
 
             /*如果owner是vip或权限未设置*/
@@ -103,7 +102,7 @@ public class LockDoorAccessListener implements Listener {
 
             e.getPayer().sendMessage(BasicUtil.replace(Lang.getString(LangType.LANG_ENTER),"%charge", charge));
         } else {
-            teleportAPI.Tp("leave", e.getPayer());
+            teleportAPI.Tp(TeleportAPI.status.LEAVE, e.getPayer());
         }
 
     }
