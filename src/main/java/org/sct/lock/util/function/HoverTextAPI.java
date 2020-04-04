@@ -27,7 +27,7 @@ public class HoverTextAPI {
     private Class<Enum<?>> EnumHoverAction;
 
     private Method getHandle;
-    //todo 版本兼容
+
     private Method getTileEntity;
     private Method getChatModifier;
     private Method setChatHoverable;
@@ -57,7 +57,13 @@ public class HoverTextAPI {
             getHandle = craftWorld.getDeclaredMethod("getHandle");
 
             if (VersionChecker.Version.getCurrent().isEqualOrHigher(VersionChecker.Version.v1_13_R3)) {
-                getTileEntity = worldServer.getDeclaredMethod("getTileEntity", BlockPosition, boolean.class);
+                /*大于1.15*/
+                if (VersionChecker.Version.getCurrent().isEqualOrHigher(VersionChecker.Version.v1_15_R1)) {
+                    getTileEntity = worldServer.getDeclaredMethod("getTileEntity", BlockPosition, boolean.class);
+                } else {
+                    getTileEntity = worldServer.getDeclaredMethod("getTileEntity", BlockPosition);
+                }
+                /*大于1.13版本*/
                 getHoverEvent = ChatModifier.getDeclaredMethod("getHoverEvent");
             } else {
                 getTileEntity = worldServer.getDeclaredMethod("getTileEntity", BlockPosition);
@@ -132,12 +138,11 @@ public class HoverTextAPI {
             Object worldServer = getHandle.invoke(location.getWorld());
             Object blockPosition = BlockPositionConstructor.newInstance(x, y, z);
             Object tileEntitySign = null;
-            if (VersionChecker.Version.getCurrent().isEqualOrHigher(VersionChecker.Version.v1_13_R3)) {
+            if (VersionChecker.Version.getCurrent().isEqualOrHigher(VersionChecker.Version.v1_15_R1)) {
                 tileEntitySign = getTileEntity.invoke(worldServer, blockPosition, true);
             } else {
                 tileEntitySign = getTileEntity.invoke(worldServer, blockPosition);
             }
-
 
             if (this.tileEntitySign.isInstance(tileEntitySign)) {
                 Object line = ((Object[]) lines.get(tileEntitySign))[0];
