@@ -29,6 +29,8 @@ Language:
   Leave: "&7[&eLock&7]&2出收费门成功"
   # 当钱不够时的提示
   NotEnoughMoney: "&7[&eLock&7]&c抱歉，你拥有的钱不足以支付通过收费门"
+  # 当前世界不可用
+  DenyWorld: "&7[&eLock&7]&c当前世界不可使用自动收费门"
   # 禁止的出入方向
   DenyDirection: "&7[&eLock&7]&c此方向禁止出入"
   # 禁止背包不为空的玩家进入

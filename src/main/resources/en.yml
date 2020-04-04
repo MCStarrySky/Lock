@@ -28,6 +28,8 @@ Language:
   Leave: "&7[&eLock&7]&2you opened the locked door and left."
   # when player don't have enough money
   NotEnoughMoney: "&7[&eLock&7]&csry, you don't have enough money"
+  # 当banned world
+  DenyWorld: "&7[&eLock&7]&cyou can not create locked door in this world"
   # banned direction
   DenyDirection: "&7[&eLock&7]&cyou can not entry by this direction"
   # can't enter unless inv is empty
