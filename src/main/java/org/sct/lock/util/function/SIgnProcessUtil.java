@@ -7,7 +7,9 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.sct.lock.Lock;
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
+import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Config;
+import org.sct.lock.file.Lang;
 import org.sct.plugincore.util.BasicUtil;
 
 import java.util.Map;
@@ -22,6 +24,12 @@ public class SIgnProcessUtil {
     private static HoverTextAPI hoverTextAPI = new HoverTextAPI();
 
     public static void processSign(SignChangeEvent e) {
+        /*如果世界不匹配,返回*/
+        if (!LocationUtil.checkWorld(e.getBlock().getLocation())) {
+            e.getPlayer().sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYWORLD)));
+            return;
+        }
+
         if (e.getLine(0).equalsIgnoreCase(Config.getString(ConfigType.SETTING_LOCKSYMBOL)) && !e.getLine(1).isEmpty()) {
             processNormalMsg(e);
             processConditions(e);
@@ -31,10 +39,6 @@ public class SIgnProcessUtil {
     }
 
     private static void processNormalMsg(SignChangeEvent e) {
-        /*如果世界不匹配,返回*/
-        if (!LocationUtil.checkWorld(e.getBlock().getLocation())) {
-            return;
-        }
         /*替换第一行Symbol*/
         e.setLine(0, BasicUtil.convert(Config.getString(ConfigType.SETTING_SYMBOLREPLACE)));
 
