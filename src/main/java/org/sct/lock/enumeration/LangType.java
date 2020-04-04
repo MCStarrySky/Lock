@@ -19,6 +19,7 @@ public enum LangType {
     LANG_DENYDIRECTION("Language.DenyDirection"),
     LANG_DENYBREAK("Language.DenyBreak"),
     LANG_DENYNOTEMPTYINV("Language.DenyNotEmptyInv"),
+    LANG_DENYWORLD("Language.DenyWorld"),
     LANG_DENYMONEY("Language.DenyMoney"),
     LANG_DENYHAVEEFFECT("Language.DenyHaveEffect"),
     LANG_ADDTYPE("Language.addType"),
