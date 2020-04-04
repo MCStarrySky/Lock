@@ -5,6 +5,7 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -28,7 +29,7 @@ public class LockData {
         inhibition = Maps.newHashMap();
         ensure = Maps.newHashMap();
         pool = new ThreadPoolExecutor(10, 25, 5, TimeUnit.MINUTES, new ArrayBlockingQueue<>(100));
-        scheduledpool = new ScheduledThreadPoolExecutor(1);
+        scheduledpool = new ScheduledThreadPoolExecutor(15);
 
         addStatus = Maps.newHashMap();
         LockData.addStatus.put("sign", false);
@@ -61,7 +62,7 @@ public class LockData {
 
     /*交互事件抑制器*/
     @Getter
-    private static Map<Player, Boolean> inhibition;
+    private static Map<OfflinePlayer, Boolean> inhibition;
 
     /*插件专用计划线程池*/
     @Getter
