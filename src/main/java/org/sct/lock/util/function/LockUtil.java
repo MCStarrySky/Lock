@@ -57,16 +57,8 @@ public class LockUtil {
      */
     @SuppressWarnings("deprecation")
     public static OfflinePlayer getOwner(Block block) {
-
-        for (String materialString : Config.getStringList(ConfigType.SETTING_SIGNTYPE)) {
-            Material material = Material.getMaterial(materialString);
-            if (block.getType() == material) {
-                Sign sign = (Sign) block.getState();
-                return Bukkit.getOfflinePlayer(sign.getLine(3).replace("§l", ""));
-            }
-        }
-
-        return null;
+        Sign sign = (Sign) block.getState();
+        return Bukkit.getOfflinePlayer(sign.getLine(3).replace("§l", ""));
     }
 
     /**
@@ -143,25 +135,9 @@ public class LockUtil {
     }
 
     public static boolean addStatus(PlayerInteractEvent e) {
-        List<String> signList = Config.getStringList(ConfigType.SETTING_SIGNTYPE);
         List<String> doorList = Config.getStringList(ConfigType.SETTING_DOORTYPE);
 
-        if (LockData.getAddStatus().get("sign")) {
-            String type = e.getClickedBlock().getLocation().getBlock().getType().toString();
-            if (!type.contains("WALL_")) {
-                e.getPlayer().sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_INVALIDTYPE), "%type", "SIGN")));
-                return true;
-            }
-
-            signList.add(type);
-            signList.add(type.replace("WALL_", ""));
-            Config.setStringList(ConfigType.SETTING_SIGNTYPE, signList);
-            Lock.getInstance().saveConfig();
-            LockData.getAddStatus().put("sign", false);
-            e.getPlayer().sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPESUCCESS), "%type", "SIGN")));;
-            e.setCancelled(true);
-            return true;
-        } else if (LockData.getAddStatus().get("door")) {
+        if (LockData.getAddStatus().get("door")) {
             doorList.add(e.getClickedBlock().getLocation().getBlock().getType().toString());
             Config.setStringList(ConfigType.SETTING_DOORTYPE, doorList);
             Lock.getInstance().saveConfig();

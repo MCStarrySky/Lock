@@ -60,19 +60,11 @@ public class BlockBreak implements Listener {
     }
 
     private boolean checkSign(BlockBreakEvent e, Block signBlock) {
-        List<String> signList = Config.getStringList(ConfigType.SETTING_SIGNTYPE);
-
-        /*判断是否符合牌子类型*/
-        for (String sign : signList) {
-            /*如果破坏的门符合类型*/
-            if (signBlock.getType() == Material.getMaterial(sign)) {
-                /*如果是自动收费门 */
-                if (CheckUtil.findSign(e.getBlock())) {
-                    OfflinePlayer owner = LockUtil.getOwner(signBlock);
-                    if (!owner.getName().equals(e.getPlayer().getName())) {
-                        return true;
-                    }
-                }
+        /*如果是自动收费门 */
+        if (CheckUtil.findSign(e.getBlock())) {
+            OfflinePlayer owner = LockUtil.getOwner(signBlock);
+            if (!owner.getName().equals(e.getPlayer().getName())) {
+                return true;
             }
         }
         return false;

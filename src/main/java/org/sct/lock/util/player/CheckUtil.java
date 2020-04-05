@@ -1,7 +1,6 @@
 package org.sct.lock.util.player;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -26,18 +25,14 @@ public class CheckUtil {
             setFourSign(aboveDoor);
             for (int j = 0; j <= 3; j++) {
                 Block sign = FourSign[j];
-                for (String signType : Config.getStringList(ConfigType.SETTING_SIGNTYPE)) {
-                    if (sign.getType() == Material.getMaterial(signType)) {
-                        if (findSign(sign)) {
-                            if (player != null) {
-                                int x = sign.getLocation().getBlockX();
-                                int y = sign.getLocation().getBlockY();
-                                int z = sign.getLocation().getBlockZ();
-                                storeData(player, door, x, y, z);
-                            }
-                            return true;
-                        }
+                if (findSign(sign)) {
+                    if (player != null) {
+                        int x = sign.getLocation().getBlockX();
+                        int y = sign.getLocation().getBlockY();
+                        int z = sign.getLocation().getBlockZ();
+                        storeData(player, door, x, y, z);
                     }
+                    return true;
                 }
             }
         }

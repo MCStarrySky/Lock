@@ -40,9 +40,7 @@ public class PlayerInteractListener implements Listener {
             return;
         }
 
-        List<String> signList = Config.getStringList(ConfigType.SETTING_SIGNTYPE);
         List<String> doorList = Config.getStringList(ConfigType.SETTING_DOORTYPE);
-
 
         if (LockUtil.addStatus(e)) {
             return;
@@ -54,12 +52,7 @@ public class PlayerInteractListener implements Listener {
 
             // 如果玩家手持物品
             if (e.hasItem()) {
-                for (String sign : signList) {
-                    Material material = Material.getMaterial(sign);
-                    if (e.getItem().getType() == material) {
-                        LockUtil.setLocation(e);
-                    }
-                }
+                LockUtil.setLocation(e);
             }
 
             for (String door : doorList) {
