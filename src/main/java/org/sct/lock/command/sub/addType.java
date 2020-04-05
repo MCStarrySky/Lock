@@ -31,14 +31,8 @@ public class addType implements SubCommand {
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("addType")) {
-            if ("sign".equalsIgnoreCase(args[1])) {
-                LockData.getAddStatus().put("sign", true);
-                LockData.getAddStatus().put("door", false);
-                sender.sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPE), "%type", "SIGN")));
-                error = false;
-            } else if ("door".equalsIgnoreCase(args[1])) {
+            if ("door".equalsIgnoreCase(args[1])) {
                 LockData.getAddStatus().put("door", true);
-                LockData.getAddStatus().put("sign", false);
                 sender.sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPE), "%type", "DOOR")));
                 error = false;
             }
