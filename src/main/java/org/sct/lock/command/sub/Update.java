@@ -26,7 +26,7 @@ public class Update implements SubCommand {
             if (args[1].equalsIgnoreCase("download")) {
                 LockData.getPool().submit(() -> {
                     try {
-                        DownloadUtil.download(sender, Lock.getInstance());
+                        DownloadUtil.download(sender, Lock.getInstance(), "LovesAsuna");
                         sender.sendMessage("§7[§eLock§7]§2下载成功");
                     } catch (IOException e) {
                         sender.sendMessage("§7[§eLock§7]§c下载更新时出错");
@@ -37,7 +37,7 @@ public class Update implements SubCommand {
             } else if (args[1].equalsIgnoreCase("version")) {
                 LockData.getPool().submit(() -> {
                     try {
-                        Lock.getPluginCoreAPI().getGitHubAPI().getUpdateDetail(sender, Lock.getInstance());
+                        Lock.getPluginCoreAPI().getGitHubAPI().getUpdateDetail(sender, Lock.getInstance(), "ZDRlZWY4ZDZlMzIyNDExYjk3NThlMGNiN2ZmYzg3NTRiOGIwZDUzZA==");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

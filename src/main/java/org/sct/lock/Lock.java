@@ -41,7 +41,7 @@ public final class Lock extends JavaPlugin {
         LockData.getPool().submit(() -> {
             FileUpdate.update(instance, "config.yml", getDataFolder().getPath());
             FileUpdate.update(instance, getConfig().getString(ConfigType.SETTING_LANGUAGE.getPath()) + ".yml", getDataFolder().getPath());
-            CheckUpdate.check(Bukkit.getConsoleSender(), instance);
+            CheckUpdate.check(Bukkit.getConsoleSender(), instance, "LovesAsuna", "ZDRlZWY4ZDZlMzIyNDExYjk3NThlMGNiN2ZmYzg3NTRiOGIwZDUzZA==");
         });
         saveDefaultConfig();
         Bukkit.getPluginCommand("lock").setExecutor(new SubCommandHandler(instance, "Lock"));
