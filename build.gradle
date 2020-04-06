@@ -7,7 +7,7 @@ repositories {
     mavenLocal()
 
     maven {
-        url 'https://papermc.io/repo/repository/maven-public/'
+        url 'https://repo.codemc.io/repository/nms/'
     }
 
     maven {
@@ -24,7 +24,7 @@ shadowJar {
 defaultTasks("copyFile")
 
 dependencies {
-    compileOnly 'org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT'
+    compileOnly 'org.bukkit:craftbukkit:1.12.2-R0.1-SNAPSHOT'
     compileOnly 'org.projectlombok:lombok:1.18.12'
     compileOnly 'com.github.LovesAsuna:VaultAPI:-SNAPSHOT'
     compileOnly 'com.github.LovesAsuna:PluginCore:-SNAPSHOT'
