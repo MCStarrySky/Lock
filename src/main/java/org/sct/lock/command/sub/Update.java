@@ -37,7 +37,7 @@ public class Update implements SubCommand {
             } else if (args[1].equalsIgnoreCase("version")) {
                 LockData.getPool().submit(() -> {
                     try {
-                        Lock.getPluginCoreAPI().getGitHubAPI().getUpdateDetail(sender, Lock.getInstance(), "ZDRlZWY4ZDZlMzIyNDExYjk3NThlMGNiN2ZmYzg3NTRiOGIwZDUzZA==");
+                        Lock.getPluginCoreAPI().getGitHubAPI().getUpdateDetail(sender, Lock.getInstance(), "LovesAsuna", "ZDRlZWY4ZDZlMzIyNDExYjk3NThlMGNiN2ZmYzg3NTRiOGIwZDUzZA==");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

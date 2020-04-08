@@ -10,7 +10,7 @@ import org.sct.lock.file.Lang;
 import org.sct.lock.util.ListenerManager;
 import org.sct.plugincore.PluginCore;
 import org.sct.plugincore.PluginCoreAPI;
-import org.sct.plugincore.util.player.EcoUtil;
+import org.sct.plugincore.util.function.econoomy.EcoUtil;
 import org.sct.plugincore.util.plugin.CheckUpdate;
 import org.sct.plugincore.util.plugin.FileUpdate;
 import org.sct.plugincore.util.plugin.Metrics;

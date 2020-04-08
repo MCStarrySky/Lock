@@ -13,7 +13,7 @@ import org.sct.lock.util.function.LockUtil;
 import org.sct.lock.util.player.InventoryUtil;
 import org.sct.lock.util.player.TeleportAPI;
 import org.sct.plugincore.util.BasicUtil;
-import org.sct.plugincore.util.player.EcoUtil;
+import org.sct.plugincore.util.function.econoomy.EcoUtil;
 
 import java.util.Map;
 
