@@ -41,6 +41,9 @@ public class CheckUtil {
     }
 
     public static boolean findSign(Block sign) {
+        if (!sign.getType().name().contains("SIGN")) {
+            return false;
+        }
         Sign Sign = (Sign) sign.getState();
         if (Sign.getLine(0).equalsIgnoreCase(BasicUtil.convert(Config.getString(ConfigType.SETTING_SYMBOLREPLACE)))) {
             return true;
