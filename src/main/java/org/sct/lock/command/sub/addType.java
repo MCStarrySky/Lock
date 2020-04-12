@@ -47,7 +47,7 @@ public class addType implements SubCommand {
     @Override
     public Map<Integer, String[]> getParams() {
         Map<Integer, String[]> params = Maps.newHashMap();
-        params.put(1, new String[]{"sign", "door"});
+        params.put(1, new String[]{"door"});
         return params;
     }
 }
