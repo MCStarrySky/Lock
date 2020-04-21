@@ -18,7 +18,6 @@ repositories {
 }
 
 shadowJar {
-    configurations = [project.configurations.compile]
 }
 
 defaultTasks("copyFile")

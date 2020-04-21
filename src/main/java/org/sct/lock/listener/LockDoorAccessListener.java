@@ -4,6 +4,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.sct.lock.Lock;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.enumeration.LangType;
 import org.sct.lock.event.PlayerAccessLockDoorEvent;
@@ -13,7 +14,6 @@ import org.sct.lock.util.function.LockUtil;
 import org.sct.lock.util.player.InventoryUtil;
 import org.sct.lock.util.player.TeleportAPI;
 import org.sct.plugincore.util.BasicUtil;
-import org.sct.plugincore.util.function.econoomy.EcoUtil;
 
 import java.util.Map;
 
@@ -36,7 +36,7 @@ public class LockDoorAccessListener implements Listener {
         /*收费门指定允许的方向*/
         TeleportAPI.status direction = LockUtil.getDirection(e.getBlock());
 
-        if (!"double".equals(direction) && !e.getPayer().getName().equals(e.getOwner().getName())) {
+        if (direction != TeleportAPI.status.DOUBLE && !e.getPayer().getName().equals(e.getOwner().getName())) {
             if (s != direction) {
                 e.getPayer().sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYDIRECTION)));
                 return;
@@ -62,7 +62,7 @@ public class LockDoorAccessListener implements Listener {
                 if (conditons.contains("2")) {
                     String line = BasicUtil.remove(((Sign) e.getBlock().getState()).getLine(2));
                     int money = BasicUtil.ExtraceInt(line);
-                    int currentMoney = (int) EcoUtil.get(e.getPayer());
+                    int currentMoney = (int) Lock.getPluginCoreAPI().getEcoAPI().get(e.getPayer());
                     Map<String, Boolean> moneyDetail = LockUtil.getMoneydetail(line, currentMoney, money);
                     String symbol = moneyDetail.keySet().iterator().next();
                     boolean access = moneyDetail.get(symbol);
@@ -81,7 +81,7 @@ public class LockDoorAccessListener implements Listener {
             }
 
             /*如果余额不足*/
-            if (!EcoUtil.has(e.getPayer(), charge)) {
+            if (!Lock.getPluginCoreAPI().getEcoAPI().has(e.getPayer(), charge)) {
                 e.getPayer().sendMessage(Lang.getString(LangType.LANG_NOTENOUGHMONEY));
                 return;
             }
@@ -91,13 +91,13 @@ public class LockDoorAccessListener implements Listener {
 
             /*如果owner是vip或权限未设置*/
             if (!"".equalsIgnoreCase(Config.getString(ConfigType.SETTING_VIPALLOWED)) || ((Player) LockUtil.getOwner(e.getBlock())).hasPermission(Config.getString(ConfigType.SETTING_VIPALLOWED))) {
-                EcoUtil.take(e.getPayer(), charge);
-                EcoUtil.give(LockUtil.getOwner(e.getBlock()), charge);
+                Lock.getPluginCoreAPI().getEcoAPI().take(e.getPayer(), charge);
+                Lock.getPluginCoreAPI().getEcoAPI().give(LockUtil.getOwner(e.getBlock()), charge);
             } else {
                 /*owner不是vip,扣税*/
-                EcoUtil.take(e.getPayer(), charge);
+                Lock.getPluginCoreAPI().getEcoAPI().take(e.getPayer(), charge);
                 charge = (1 - Config.getInteger(ConfigType.SETTING_TAXPERCENT)) * charge;
-                EcoUtil.give(LockUtil.getOwner(e.getBlock()), charge);
+                Lock.getPluginCoreAPI().getEcoAPI().give(LockUtil.getOwner(e.getBlock()), charge);
             }
 
             e.getPayer().sendMessage(BasicUtil.replace(Lang.getString(LangType.LANG_ENTER),"%charge", charge));

@@ -10,7 +10,6 @@ import org.sct.lock.file.Lang;
 import org.sct.lock.util.ListenerManager;
 import org.sct.plugincore.PluginCore;
 import org.sct.plugincore.PluginCoreAPI;
-import org.sct.plugincore.util.function.econoomy.EcoUtil;
 import org.sct.plugincore.util.plugin.CheckUpdate;
 import org.sct.plugincore.util.plugin.FileUpdate;
 import org.sct.plugincore.util.plugin.Metrics;
@@ -37,7 +36,7 @@ public final class Lock extends JavaPlugin {
         pluginCoreAPI = PluginCore.getPluginCoreAPI();
         ListenerManager.register();
         Lang.loadLang();
-        EcoUtil.loadVault();
+        pluginCoreAPI.getEcoAPI().loadVault();
         LockData.getPool().submit(() -> {
             FileUpdate.update(instance, "config.yml", getDataFolder().getPath());
             FileUpdate.update(instance, getConfig().getString(ConfigType.SETTING_LANGUAGE.getPath()) + ".yml", getDataFolder().getPath());
