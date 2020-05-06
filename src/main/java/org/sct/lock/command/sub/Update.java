@@ -7,7 +7,6 @@ import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Lang;
 import org.sct.plugincore.util.function.command.SubCommand;
-import org.sct.plugincore.util.plugin.DownloadUtil;
 
 import java.io.IOException;
 import java.util.Map;
@@ -24,18 +23,13 @@ public class Update implements SubCommand {
 
         if (args.length == 2) {
             if (args[1].equalsIgnoreCase("download")) {
-                LockData.getPool().submit(() -> {
-                    try {
-                        DownloadUtil.download(sender, Lock.getInstance(), "LovesAsuna");
-                        sender.sendMessage("§7[§eLock§7]§2下载成功");
-                    } catch (IOException e) {
-                        sender.sendMessage("§7[§eLock§7]§c下载更新时出错");
-                    }
-
+                LockData.INSTANCE.getPool().submit(() -> {
+                    Lock.getPluginCoreAPI().getGitHubAPI().download(sender, Lock.getInstance(), "LovesAsuna");
+                    sender.sendMessage("§7[§eLock§7]§2下载成功");
                 });
                 error = false;
             } else if (args[1].equalsIgnoreCase("version")) {
-                LockData.getPool().submit(() -> {
+                LockData.INSTANCE.getPool().submit(() -> {
                     try {
                         Lock.getPluginCoreAPI().getGitHubAPI().getUpdateDetail(sender, Lock.getInstance(), "LovesAsuna", "ZDRlZWY4ZDZlMzIyNDExYjk3NThlMGNiN2ZmYzg3NTRiOGIwZDUzZA==");
                     } catch (IOException e) {

@@ -55,12 +55,12 @@ public class CheckUtil {
 
         //玩家交互的门(忽视高度)
         if (player != null) {
-            LockData.getPlayerBlock().put(player, door);
+            LockData.INSTANCE.getPlayerBlock().put(player, door);
         }
 
         //存入玩家交互的门上方的牌子
         if (player != null) {
-            LockData.getPlayerSign().put(player, new Location(player.getWorld(), x, y, z).getBlock());
+            LockData.INSTANCE.getPlayerSign().put(player, new Location(player.getWorld(), x, y, z).getBlock());
         }
     }
 

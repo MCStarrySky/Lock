@@ -32,7 +32,7 @@ public class addType implements SubCommand {
 
         if (args.length == 2 && args[0].equalsIgnoreCase("addType")) {
             if ("door".equalsIgnoreCase(args[1])) {
-                LockData.getAddStatus().put("door", true);
+                LockData.INSTANCE.getAddStatus().put("door", true);
                 sender.sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPE), "%type", "DOOR")));
                 error = false;
             }

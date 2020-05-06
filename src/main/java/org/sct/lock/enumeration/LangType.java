@@ -1,7 +1,5 @@
 package org.sct.lock.enumeration;
 
-import lombok.Getter;
-
 public enum LangType {
 
     /**
@@ -28,7 +26,11 @@ public enum LangType {
     LANG_DoorDetail("Language.DoorDetail"),
     LANG_BANREDSTONE("Language.BanRedstone");
 
-    @Getter String path;
+    String path;
+
+    public String getPath() {
+        return path;
+    }
 
     LangType(String path) {
         this.path = path;

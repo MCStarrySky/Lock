@@ -21,12 +21,12 @@ public class InteractInhit {
     @SuppressWarnings("deprecation")
     public static boolean getInhibitStatus(String playerName, int milliseconds) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
-        if (LockData.getInhibition().get(player) != null) {
+        if (LockData.INSTANCE.getInhibition().get(player) != null) {
             return false;
         } else {
-            LockData.getInhibition().put(player,true);
-            LockData.getScheduledpool().schedule(() -> {
-                LockData.getInhibition().remove(player);
+            LockData.INSTANCE.getInhibition().put(player,true);
+            LockData.INSTANCE.getScheduledpool().schedule(() -> {
+                LockData.INSTANCE.getInhibition().remove(player);
             }, milliseconds, TimeUnit.MILLISECONDS);
             return true;
         }

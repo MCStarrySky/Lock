@@ -1,78 +1,104 @@
-package org.sct.lock.data;
+package org.sct.lock.data
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Maps;
-import lombok.Getter;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-
-import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import com.google.common.collect.BiMap
+import com.google.common.collect.HashBiMap
+import com.google.common.collect.Maps
+import org.bukkit.Location
+import org.bukkit.OfflinePlayer
+import org.bukkit.block.Block
+import org.bukkit.entity.Player
+import org.sct.lock.util.function.LockThreadFactory
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 /**
  * @author LovesAsuna
  */
-public class LockData {
-
-    static {
-        PlayerDoorLocation = HashBiMap.create();
-        PlayerSignLocation = HashBiMap.create();
-        PlayerisSneak = Maps.newHashMap();
-        PlayerSign = Maps.newHashMap();
-        PlayerBlock = Maps.newHashMap();
-        inhibition = Maps.newHashMap();
-        ensure = Maps.newHashMap();
-        pool = new ThreadPoolExecutor(10, 25, 5, TimeUnit.MINUTES, new ArrayBlockingQueue<>(100));
-        scheduledpool = new ScheduledThreadPoolExecutor(15);
-
-        addStatus = Maps.newHashMap();
-        LockData.addStatus.put("sign", false);
-        LockData.addStatus.put("door", false);
-    }
-
+object LockData {
     /*玩家-牌子坐标*/
-    @Getter
-    private static BiMap<Player, Location> PlayerSignLocation;
+    private var PlayerSignLocation: BiMap<Player, Location>? = null
 
     /*玩家-门坐标*/
-    @Getter
-    private static BiMap<Player, Location> PlayerDoorLocation;
+    private var PlayerDoorLocation: BiMap<Player, Location>? = null
 
     /*玩家潜行的状态*/
-    @Getter
-    private static Map<Player, Boolean> PlayerisSneak;
+    private var PlayerisSneak: MutableMap<Player, Boolean>? = null
 
     /*玩家交互的门上方的牌子*/
-    @Getter
-    private static Map<Player, Block> PlayerSign;
+    private var PlayerSign: MutableMap<Player, Block>? = null
 
     /*玩家交互的门(忽视高度)*/
-    @Getter
-    private static Map<Player, Block> PlayerBlock;
+    private var PlayerBlock: MutableMap<Player, Block>? = null
 
     /*插件专用线程池*/
-    @Getter
-    private static ThreadPoolExecutor pool;
+    private var pool: ThreadPoolExecutor? = null
 
     /*交互事件抑制器*/
-    @Getter
-    private static Map<OfflinePlayer, Boolean> inhibition;
+    private var inhibition: MutableMap<OfflinePlayer, Boolean>? = null
 
     /*插件专用计划线程池*/
-    @Getter
-    private static ScheduledThreadPoolExecutor scheduledpool;
+    private var scheduledpool: ScheduledThreadPoolExecutor? = null
 
     /*添加配置状态*/
-    @Getter
-    private static Map<String, Boolean> addStatus;
+    private var addStatus: MutableMap<String, Boolean>? = null
 
     /*玩家进门确认状态*/
-    @Getter
-    private static Map<Player, Boolean> ensure;
+    private var ensure: MutableMap<Player, Boolean>? = null
+
+    init {
+        PlayerDoorLocation = HashBiMap.create()
+        PlayerSignLocation = HashBiMap.create()
+        addStatus = Maps.newHashMap()
+        PlayerisSneak = Maps.newHashMap()
+        PlayerSign = Maps.newHashMap()
+        PlayerBlock = Maps.newHashMap()
+        inhibition = Maps.newHashMap()
+        ensure = Maps.newHashMap()
+        pool = ThreadPoolExecutor(10, 25, 5, TimeUnit.MINUTES, ArrayBlockingQueue(100), LockThreadFactory("[Lock]"))
+        scheduledpool = ScheduledThreadPoolExecutor(15)
+        addStatus?.put("door", false)
+    }
+
+    fun getPlayerSign(): MutableMap<Player, Block>? {
+        return PlayerSign
+    }
+
+    fun getPlayerisSneak(): MutableMap<Player, Boolean>? {
+        return PlayerisSneak
+    }
+
+    fun getEnsure(): MutableMap<Player, Boolean>? {
+        return ensure
+    }
+
+    fun getPlayerSignLocation(): BiMap<Player, Location>? {
+        return PlayerSignLocation
+    }
+
+    fun getPlayerDoorLocation(): BiMap<Player, Location>? {
+        return PlayerDoorLocation
+    }
+
+    fun getAddStatus(): MutableMap<String, Boolean>? {
+        return addStatus
+    }
+
+    fun getPool(): ThreadPoolExecutor? {
+        return pool
+    }
+
+    fun getScheduledpool(): ScheduledThreadPoolExecutor? {
+        return scheduledpool
+    }
+
+    fun getPlayerBlock(): MutableMap<Player, Block>? {
+        return PlayerBlock
+    }
+
+    fun getInhibition(): MutableMap<OfflinePlayer, Boolean>? {
+        return inhibition
+    }
+
 }

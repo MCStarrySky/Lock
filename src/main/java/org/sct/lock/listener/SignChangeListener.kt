@@ -1,43 +1,37 @@
-package org.sct.lock.listener;
+package org.sct.lock.listener
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.SignChangeEvent;
-import org.sct.lock.data.LockData;
-import org.sct.lock.enumeration.ConfigType;
-import org.sct.lock.file.Config;
-import org.sct.lock.util.function.SIgnProcessUtil;
+import org.bukkit.Material
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.block.SignChangeEvent
+import org.sct.lock.data.LockData
+import org.sct.lock.enumeration.ConfigType
+import org.sct.lock.file.Config
+import org.sct.lock.util.function.SIgnProcessUtil
 
 /**
  * @author LovesAsuna
  * @since 2019/12/4 23:03
  */
-public class SignChangeListener implements Listener {
-
+class SignChangeListener : Listener {
     @EventHandler
-    public void onSignChange(SignChangeEvent e) {
-        Location location = e.getBlock().getLocation();
-        boolean cancel = true;
-
-        if (LockData.getPlayerDoorLocation().get(e.getPlayer()) == null) {
-            return;
+    fun onSignChange(e: SignChangeEvent) {
+        val location = e.block.location
+        var cancel = true
+        if (LockData.getPlayerDoorLocation()?.get(e.player) == null) {
+            return
         }
-
-        for (String doors : Config.getStringList(ConfigType.SETTING_DOORTYPE)) {
-            if (LockData.getPlayerDoorLocation().get(e.getPlayer()).getBlock().getType() == Material.getMaterial(doors)) {
-                cancel = false;
-                break;
+        for (doors in Config.getStringList(ConfigType.SETTING_DOORTYPE)) {
+            if (LockData.getPlayerDoorLocation()?.get(e.player)!!.block.type == Material.getMaterial(doors)) {
+                cancel = false
+                break
             }
         }
-
         if (cancel) {
-            return;
+            return
         }
-
-        if (e.getPlayer() == LockData.getPlayerSignLocation().inverse().get(location)) {
-            SIgnProcessUtil.processSign(e);
+        if (e.player == LockData.getPlayerSignLocation()?.inverse()?.get(location)) {
+            SIgnProcessUtil.processSign(e)
         }
     }
 }

@@ -45,9 +45,9 @@ public class LockUtil {
                 location = new Location(world, X + 1, Y, Z);
             }
             /*存入玩家-牌子坐标*/
-            LockData.getPlayerSignLocation().put(e.getPlayer(),location);
+            LockData.INSTANCE.getPlayerSignLocation().putIfAbsent(e.getPlayer(),location);
             /*存入玩家-门坐标*/
-            LockData.getPlayerDoorLocation().put(e.getPlayer(), new Location(e.getPlayer().getWorld(), X, LowY, Z));
+            LockData.INSTANCE.getPlayerDoorLocation().putIfAbsent(e.getPlayer(), new Location(e.getPlayer().getWorld(), X, LowY, Z));
         }
     }
 
@@ -81,7 +81,12 @@ public class LockUtil {
         }
     }
 
-    public static String getConditons(Block block) {
+    /**
+     * 获得条件
+     * @param block 牌子
+     * @return 条件
+     **/
+    public static String getConditions(Block block) {
         String orign = SIgnProcessUtil.getHoverTextAPI().getText(block.getLocation());
         String empty = BasicUtil.convert(Config.getString(ConfigType.SETTING_EMPTYREPLACE));
         String money = BasicUtil.convert(Config.getString(ConfigType.SETTING_FLAGMONEY));
@@ -100,6 +105,13 @@ public class LockUtil {
         return restriction.toString();
     }
 
+    /**
+     * 返回详细的金钱消息
+     * @param line 内容
+     * @param currentMoney 现有余额
+     * @param money 需要的钱
+     * @return java.util.Map<java.lang.String,java.lang.Boolean>
+     **/
     public static Map<String, Boolean> getMoneydetail(String line, int currentMoney, int money) {
         boolean access = false;
         String symbol = "";
@@ -137,11 +149,11 @@ public class LockUtil {
     public static boolean addStatus(PlayerInteractEvent e) {
         List<String> doorList = Config.getStringList(ConfigType.SETTING_DOORTYPE);
 
-        if (LockData.getAddStatus().get("door")) {
+        if (LockData.INSTANCE.getAddStatus().get("door")) {
             doorList.add(e.getClickedBlock().getLocation().getBlock().getType().toString());
             Config.setStringList(ConfigType.SETTING_DOORTYPE, doorList);
             Lock.getInstance().saveConfig();
-            LockData.getAddStatus().put("door", false);
+            LockData.INSTANCE.getAddStatus().put("door", false);
             e.getPlayer().sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPESUCCESS), "%type", "DOOR")));;
             e.setCancelled(true);
             return true;

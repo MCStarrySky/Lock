@@ -1,6 +1,5 @@
 package org.sct.lock;
 
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.sct.lock.command.SubCommandHandler;
@@ -21,23 +20,18 @@ import org.sct.plugincore.util.plugin.Metrics;
  */
 public final class Lock extends JavaPlugin {
 
-    @Getter
-    private static LockData lockData;
-    @Getter
     private static Lock instance;
-    @Getter
     private static PluginCoreAPI pluginCoreAPI;
 
     @Override
     public void onEnable() {
         instance = this;
         Metrics metrics = new Metrics(this, 6910);
-        lockData = new LockData();
         pluginCoreAPI = PluginCore.getPluginCoreAPI();
         ListenerManager.register();
         Lang.loadLang();
         pluginCoreAPI.getEcoAPI().loadVault();
-        LockData.getPool().submit(() -> {
+        LockData.INSTANCE.getPool().submit(() -> {
             FileUpdate.update(instance, "config.yml", getDataFolder().getPath());
             FileUpdate.update(instance, getConfig().getString(ConfigType.SETTING_LANGUAGE.getPath()) + ".yml", getDataFolder().getPath());
             CheckUpdate.check(Bukkit.getConsoleSender(), instance, "LovesAsuna", "ZDRlZWY4ZDZlMzIyNDExYjk3NThlMGNiN2ZmYzg3NTRiOGIwZDUzZA==");
@@ -61,4 +55,11 @@ public final class Lock extends JavaPlugin {
         getServer().getConsoleSender().sendMessage("§7[§eLock§7]§c插件已被卸载");
     }
 
+    public static Lock getInstance() {
+        return instance;
+    }
+
+    public static PluginCoreAPI getPluginCoreAPI() {
+        return pluginCoreAPI;
+    }
 }

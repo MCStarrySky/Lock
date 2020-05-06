@@ -1,110 +1,94 @@
-package org.sct.lock.listener;
+package org.sct.lock.listener
 
-import org.bukkit.block.Sign;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.sct.lock.Lock;
-import org.sct.lock.enumeration.ConfigType;
-import org.sct.lock.enumeration.LangType;
-import org.sct.lock.event.PlayerAccessLockDoorEvent;
-import org.sct.lock.file.Config;
-import org.sct.lock.file.Lang;
-import org.sct.lock.util.function.LockUtil;
-import org.sct.lock.util.player.InventoryUtil;
-import org.sct.lock.util.player.TeleportAPI;
-import org.sct.plugincore.util.BasicUtil;
-
-import java.util.Map;
+import org.bukkit.block.Sign
+import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.sct.lock.Lock
+import org.sct.lock.enumeration.ConfigType
+import org.sct.lock.enumeration.LangType
+import org.sct.lock.event.PlayerAccessLockDoorEvent
+import org.sct.lock.file.Config
+import org.sct.lock.file.Lang
+import org.sct.lock.util.function.LockUtil
+import org.sct.lock.util.player.InventoryUtil
+import org.sct.lock.util.player.TeleportAPI.status
+import org.sct.plugincore.util.BasicUtil
 
 /**
  * @author alchemy
  * @date 2019-12-09 19:24
  */
-
-public class LockDoorAccessListener implements Listener {
-
+class LockDoorAccessListener : Listener {
     @EventHandler
-    public void onAccess(PlayerAccessLockDoorEvent e) {
-        Sign sign = (Sign) e.getBlock().getState();
-        int charge = BasicUtil.ExtraceInt(sign.getLine(1).trim());
-
-        TeleportAPI teleportAPI = e.getTeleportAPI();
-
-        TeleportAPI.status s = teleportAPI.getPlayerFace(e.getPayer());
+    fun onAccess(e: PlayerAccessLockDoorEvent) {
+        val sign = e.block.state as Sign
+        var charge = BasicUtil.ExtraceInt(sign.getLine(1).trim { it <= ' ' })
+        val teleportAPI = e.teleportAPI
+        val s = teleportAPI.getPlayerFace(e.payer)
 
         /*收费门指定允许的方向*/
-        TeleportAPI.status direction = LockUtil.getDirection(e.getBlock());
-
-        if (direction != TeleportAPI.status.DOUBLE && !e.getPayer().getName().equals(e.getOwner().getName())) {
+        val direction = LockUtil.getDirection(e.block)
+        if (direction != status.DOUBLE && e.payer.name != e.owner.name) {
             if (s != direction) {
-                e.getPayer().sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYDIRECTION)));
-                return;
+                e.payer.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYDIRECTION)))
+                return
             }
         }
-
-        String conditons = LockUtil.getConditons(e.getBlock());
-
-        if (s == TeleportAPI.status.ENTER) {
-            if (e.getPayer().getName().equals(e.getOwner().getName())) {
-                teleportAPI.Tp(TeleportAPI.status.ENTER, e.getPayer());
-                return;
+        val conditons = LockUtil.getConditions(e.block)
+        if (s == status.ENTER) {
+            if (e.payer.name == e.owner.name) {
+                teleportAPI.Tp(status.ENTER, e.payer)
+                return
             }
-
-            if (!conditons.isEmpty()) {
+            if (conditons.isNotEmpty()) {
                 if (conditons.contains("1")) {
-                    if (!InventoryUtil.isInvEmpty(e.getPayer())) {
-                        e.getPayer().sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYNOTEMPTYINV)));
-                        return;
+                    if (!InventoryUtil.isInvEmpty(e.payer)) {
+                        e.payer.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYNOTEMPTYINV)))
+                        return
                     }
                 }
-
                 if (conditons.contains("2")) {
-                    String line = BasicUtil.remove(((Sign) e.getBlock().getState()).getLine(2));
-                    int money = BasicUtil.ExtraceInt(line);
-                    int currentMoney = (int) Lock.getPluginCoreAPI().getEcoAPI().get(e.getPayer());
-                    Map<String, Boolean> moneyDetail = LockUtil.getMoneydetail(line, currentMoney, money);
-                    String symbol = moneyDetail.keySet().iterator().next();
-                    boolean access = moneyDetail.get(symbol);
+                    val line = BasicUtil.remove((e.block.state as Sign).getLine(2))
+                    val money = BasicUtil.ExtraceInt(line)
+                    val currentMoney = Lock.getPluginCoreAPI().ecoAPI[e.payer].toInt()
+                    val moneyDetail = LockUtil.getMoneydetail(line, currentMoney, money)
+                    val symbol = moneyDetail.keys.iterator().next()
+                    val access = moneyDetail[symbol]!!
                     if (!access && !symbol.isEmpty()) {
-                        e.getPayer().sendMessage(BasicUtil.replace(Lang.getString(LangType.LANG_DENYMONEY), "%needmoney", symbol + money));
-                        return;
+                        e.payer.sendMessage(BasicUtil.replace(Lang.getString(LangType.LANG_DENYMONEY), "%needmoney", symbol + money))
+                        return
                     }
                 }
-
                 if (conditons.contains("3")) {
-                    if (!e.getPayer().getActivePotionEffects().isEmpty()) {
-                        e.getPayer().sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYHAVEEFFECT)));
-                        return;
+                    if (!e.payer.activePotionEffects.isEmpty()) {
+                        e.payer.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYHAVEEFFECT)))
+                        return
                     }
                 }
             }
 
             /*如果余额不足*/
-            if (!Lock.getPluginCoreAPI().getEcoAPI().has(e.getPayer(), charge)) {
-                e.getPayer().sendMessage(Lang.getString(LangType.LANG_NOTENOUGHMONEY));
-                return;
+            if (!Lock.getPluginCoreAPI().ecoAPI.has(e.payer, charge.toDouble())) {
+                e.payer.sendMessage(Lang.getString(LangType.LANG_NOTENOUGHMONEY))
+                return
             }
-
-            teleportAPI.Tp(TeleportAPI.status.ENTER, e.getPayer());
+            teleportAPI.Tp(status.ENTER, e.payer)
             /*payer付钱部分*/
 
             /*如果owner是vip或权限未设置*/
-            if (!"".equalsIgnoreCase(Config.getString(ConfigType.SETTING_VIPALLOWED)) || ((Player) LockUtil.getOwner(e.getBlock())).hasPermission(Config.getString(ConfigType.SETTING_VIPALLOWED))) {
-                Lock.getPluginCoreAPI().getEcoAPI().take(e.getPayer(), charge);
-                Lock.getPluginCoreAPI().getEcoAPI().give(LockUtil.getOwner(e.getBlock()), charge);
+            if (!"".equals(Config.getString(ConfigType.SETTING_VIPALLOWED), ignoreCase = true) || (LockUtil.getOwner(e.block) as Player).hasPermission(Config.getString(ConfigType.SETTING_VIPALLOWED))) {
+                Lock.getPluginCoreAPI().ecoAPI.take(e.payer, charge.toDouble())
+                Lock.getPluginCoreAPI().ecoAPI.give(LockUtil.getOwner(e.block), charge.toDouble())
             } else {
                 /*owner不是vip,扣税*/
-                Lock.getPluginCoreAPI().getEcoAPI().take(e.getPayer(), charge);
-                charge = (1 - Config.getInteger(ConfigType.SETTING_TAXPERCENT)) * charge;
-                Lock.getPluginCoreAPI().getEcoAPI().give(LockUtil.getOwner(e.getBlock()), charge);
+                Lock.getPluginCoreAPI().ecoAPI.take(e.payer, charge.toDouble())
+                charge = (1 - Config.getInteger(ConfigType.SETTING_TAXPERCENT)) * charge
+                Lock.getPluginCoreAPI().ecoAPI.give(LockUtil.getOwner(e.block), charge.toDouble())
             }
-
-            e.getPayer().sendMessage(BasicUtil.replace(Lang.getString(LangType.LANG_ENTER),"%charge", charge));
+            e.payer.sendMessage(BasicUtil.replace(Lang.getString(LangType.LANG_ENTER), "%charge", charge))
         } else {
-            teleportAPI.Tp(TeleportAPI.status.LEAVE, e.getPayer());
+            teleportAPI.Tp(status.LEAVE, e.payer)
         }
-
     }
-
 }

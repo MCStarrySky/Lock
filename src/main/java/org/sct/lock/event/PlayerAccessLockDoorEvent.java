@@ -1,7 +1,5 @@
 package org.sct.lock.event;
 
-import lombok.Getter;
-
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -17,13 +15,9 @@ public class PlayerAccessLockDoorEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
-    @Getter
     Player payer;
-    @Getter
     OfflinePlayer owner;
-    @Getter
     Block block;
-    @Getter
     TeleportAPI teleportAPI;
 
     /**
@@ -49,4 +43,19 @@ public class PlayerAccessLockDoorEvent extends Event {
         return handlers;
     }
 
+    public Block getBlock() {
+        return block;
+    }
+
+    public OfflinePlayer getOwner() {
+        return owner;
+    }
+
+    public Player getPayer() {
+        return payer;
+    }
+
+    public TeleportAPI getTeleportAPI() {
+        return teleportAPI;
+    }
 }

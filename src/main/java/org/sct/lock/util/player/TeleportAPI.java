@@ -105,11 +105,8 @@ public class TeleportAPI {
     }
 
     public void getData(Player player) {
-        sign = LockData.getPlayerSign().get(player);
-        block = LockData.getPlayerBlock().get(player);
-
-        /*通过blockdata获取牌子朝向*/
-        //blockFace = sign.getBlockData().getAsString().split(",")[0].split("=")[1];
+        sign = LockData.INSTANCE.getPlayerSign().get(player);
+        block = LockData.INSTANCE.getPlayerBlock().get(player);
 
         if (getBlockFace(sign.getRelative(0, 0, 1))) {
             blockFace = N;

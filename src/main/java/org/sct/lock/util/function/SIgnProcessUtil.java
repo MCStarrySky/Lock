@@ -1,6 +1,5 @@
 package org.sct.lock.util.function;
 
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.block.SignChangeEvent;
@@ -20,7 +19,6 @@ import java.util.Map;
  */
 
 public class SIgnProcessUtil {
-    @Getter
     private static HoverTextAPI hoverTextAPI = new HoverTextAPI();
 
     public static void processSign(SignChangeEvent e) {
@@ -34,8 +32,8 @@ public class SIgnProcessUtil {
             processNormalMsg(e);
             processConditions(e);
         }
-        LockData.getPlayerSignLocation().remove(e.getPlayer());
-        LockData.getPlayerDoorLocation().remove(e.getPlayer());
+        LockData.INSTANCE.getPlayerSignLocation().remove(e.getPlayer());
+        LockData.INSTANCE.getPlayerDoorLocation().remove(e.getPlayer());
     }
 
     private static void processNormalMsg(SignChangeEvent e) {
@@ -108,5 +106,9 @@ public class SIgnProcessUtil {
         Bukkit.getScheduler().runTaskLater(Lock.getInstance(), () -> {
             hoverTextAPI.saveText(location, buffer.toString());
         }, 1);
+    }
+
+    public static HoverTextAPI getHoverTextAPI() {
+        return hoverTextAPI;
     }
 }

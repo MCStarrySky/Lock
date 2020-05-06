@@ -1,39 +1,29 @@
-package org.sct.lock.listener;
+package org.sct.lock.listener
 
-import com.google.common.collect.Lists;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockRedstoneEvent;
-import org.sct.lock.Lock;
-import org.sct.lock.enumeration.ConfigType;
-import org.sct.lock.util.player.CheckUtil;
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.block.BlockRedstoneEvent
+import org.sct.lock.Lock
+import org.sct.lock.enumeration.ConfigType
+import org.sct.lock.util.player.CheckUtil
 
-public class BlockRedstone implements Listener {
-
+class BlockRedstone : Listener {
     @EventHandler
-    public void onBlockRedstone(BlockRedstoneEvent e) {
-
-        boolean isDoor = false;
-
-        if (!Lock.getInstance().getConfig().getBoolean(ConfigType.SETTING_BANREDSTONEACTIVE.getPath())) {
-            return;
+    fun onBlockRedstone(e: BlockRedstoneEvent) {
+        var isDoor = false
+        if (!Lock.getInstance().config.getBoolean(ConfigType.SETTING_BANREDSTONEACTIVE.path)) {
+            return
         }
-
-        for (String door : Lock.getInstance().getConfig().getStringList(ConfigType.SETTING_DOORTYPE.getPath())) {
-            if (e.getBlock().getType().toString().equalsIgnoreCase(door)) {
-                isDoor = true;
+        for (door in Lock.getInstance().config.getStringList(ConfigType.SETTING_DOORTYPE.path)) {
+            if (e.block.type.toString().equals(door, ignoreCase = true)) {
+                isDoor = true
             }
         }
-
         if (!isDoor) {
-            return;
+            return
         }
-
-        if (CheckUtil.CheckSign(null, e.getBlock())) {
-            e.setNewCurrent(e.getOldCurrent());
+        if (CheckUtil.CheckSign(null, e.block)) {
+            e.newCurrent = e.oldCurrent
         }
-
     }
 }

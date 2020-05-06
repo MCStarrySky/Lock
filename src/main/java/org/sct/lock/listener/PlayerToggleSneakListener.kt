@@ -1,20 +1,18 @@
-package org.sct.lock.listener;
+package org.sct.lock.listener
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerToggleSneakEvent
+import org.sct.lock.data.LockData
 
-import org.sct.lock.data.LockData;
-
-public class PlayerToggleSneakListener implements Listener {
-
+class PlayerToggleSneakListener : Listener {
     @EventHandler
-    public void onPlayerToggleSneak(PlayerToggleSneakEvent e) {
+    fun onPlayerToggleSneak(e: PlayerToggleSneakEvent) {
         //如果玩家正在前行
-        if (e.isSneaking()) {
-            LockData.getPlayerisSneak().put(e.getPlayer(),true);
+        if (e.isSneaking) {
+            LockData.getPlayerisSneak()?.set(e.player, true)
         } else {
-            LockData.getPlayerisSneak().remove(e.getPlayer());
+            LockData.getPlayerisSneak()?.remove(e.player)
         }
     }
 }

@@ -1,7 +1,5 @@
 package org.sct.lock.enumeration;
 
-import lombok.Getter;
-
 public enum ConfigType {
 
     SETTING_LANGUAGE("Setting.Language"),
@@ -31,7 +29,11 @@ public enum ConfigType {
     SETTING_EFFECTREPLACE("Setting.EffectReplace");
 
 
-    @Getter String path;
+    String path;
+
+    public String getPath() {
+        return path;
+    }
 
     ConfigType(String path) {
         this.path = path;
