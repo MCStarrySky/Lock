@@ -51,7 +51,7 @@ class LockDoorAccessListener : Listener {
                 if (conditons.contains("2")) {
                     val line = BasicUtil.remove((e.block.state as Sign).getLine(2))
                     val money = BasicUtil.ExtraceInt(line)
-                    val currentMoney = Lock.getPluginCoreAPI().ecoAPI[e.payer].toInt()
+                    val currentMoney = Lock.pluginCoreAPI.ecoAPI[e.payer].toInt()
                     val moneyDetail = LockUtil.getMoneydetail(line, currentMoney, money)
                     val symbol = moneyDetail.keys.iterator().next()
                     val access = moneyDetail[symbol]!!
@@ -69,7 +69,7 @@ class LockDoorAccessListener : Listener {
             }
 
             /*如果余额不足*/
-            if (!Lock.getPluginCoreAPI().ecoAPI.has(e.payer, charge.toDouble())) {
+            if (!Lock.pluginCoreAPI.ecoAPI.has(e.payer, charge.toDouble())) {
                 e.payer.sendMessage(Lang.getString(LangType.LANG_NOTENOUGHMONEY))
                 return
             }
@@ -78,13 +78,13 @@ class LockDoorAccessListener : Listener {
 
             /*如果owner是vip或权限未设置*/
             if (!"".equals(Config.getString(ConfigType.SETTING_VIPALLOWED), ignoreCase = true) || (LockUtil.getOwner(e.block) as Player).hasPermission(Config.getString(ConfigType.SETTING_VIPALLOWED))) {
-                Lock.getPluginCoreAPI().ecoAPI.take(e.payer, charge.toDouble())
-                Lock.getPluginCoreAPI().ecoAPI.give(LockUtil.getOwner(e.block), charge.toDouble())
+                Lock.pluginCoreAPI.ecoAPI.take(e.payer, charge.toDouble())
+                Lock.pluginCoreAPI.ecoAPI.give(LockUtil.getOwner(e.block), charge.toDouble())
             } else {
                 /*owner不是vip,扣税*/
-                Lock.getPluginCoreAPI().ecoAPI.take(e.payer, charge.toDouble())
+                Lock.pluginCoreAPI.ecoAPI.take(e.payer, charge.toDouble())
                 charge = (1 - Config.getInteger(ConfigType.SETTING_TAXPERCENT)) * charge
-                Lock.getPluginCoreAPI().ecoAPI.give(LockUtil.getOwner(e.block), charge.toDouble())
+                Lock.pluginCoreAPI.ecoAPI.give(LockUtil.getOwner(e.block), charge.toDouble())
             }
             e.payer.sendMessage(BasicUtil.replace(Lang.getString(LangType.LANG_ENTER), "%charge", charge))
         } else {

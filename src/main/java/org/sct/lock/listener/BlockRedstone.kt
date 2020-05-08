@@ -11,10 +11,10 @@ class BlockRedstone : Listener {
     @EventHandler
     fun onBlockRedstone(e: BlockRedstoneEvent) {
         var isDoor = false
-        if (!Lock.getInstance().config.getBoolean(ConfigType.SETTING_BANREDSTONEACTIVE.path)) {
+        if (!Lock.instance.config.getBoolean(ConfigType.SETTING_BANREDSTONEACTIVE.path)) {
             return
         }
-        for (door in Lock.getInstance().config.getStringList(ConfigType.SETTING_DOORTYPE.path)) {
+        for (door in Lock.instance.config.getStringList(ConfigType.SETTING_DOORTYPE.path)) {
             if (e.block.type.toString().equals(door, ignoreCase = true)) {
                 isDoor = true
             }

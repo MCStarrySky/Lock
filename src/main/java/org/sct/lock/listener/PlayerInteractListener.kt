@@ -77,7 +77,7 @@ class PlayerInteractListener : Listener {
                         val delay = (orignDelay.toDouble() / 50).toLong()
                         Inhibition.getInhibitStatus(player, Config.getInteger(ConfigType.SETTING_ENTERDELAY), TimeUnit.MILLISECONDS)
                         val inhit = Inhibition.getInhibitStatus(player, Config.getInteger(ConfigType.SETTING_ENTERDELAY), TimeUnit.MILLISECONDS)
-                        Bukkit.getScheduler().runTaskLaterAsynchronously(Lock.getInstance(), { LockData.ensure?.set(player, false) }, delay)
+                        Bukkit.getScheduler().runTaskLaterAsynchronously(Lock.instance, { LockData.ensure?.set(player, false) }, delay)
                         LockData.ensure?.putIfAbsent(player, false)
                         val ensure = LockData.ensure?.get(player)!!
                         if (!inhit && !ensure) {
