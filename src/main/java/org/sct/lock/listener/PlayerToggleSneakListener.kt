@@ -10,9 +10,9 @@ class PlayerToggleSneakListener : Listener {
     fun onPlayerToggleSneak(e: PlayerToggleSneakEvent) {
         //如果玩家正在前行
         if (e.isSneaking) {
-            LockData.getPlayerisSneak()?.set(e.player, true)
+            LockData.PlayerisSneak?.set(e.player, true)
         } else {
-            LockData.getPlayerisSneak()?.remove(e.player)
+            LockData.PlayerisSneak?.remove(e.player)
         }
     }
 }
