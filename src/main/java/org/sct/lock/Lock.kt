@@ -2,16 +2,17 @@ package org.sct.lock
 
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
+import org.sct.easylib.EasyLib
+import org.sct.easylib.EasyLibAPI
+import org.sct.easylib.util.plugin.CheckUpdate
+import org.sct.easylib.util.plugin.FileUpdate
+import org.sct.easylib.util.plugin.Metrics
 import org.sct.lock.command.SubCommandHandler
 import org.sct.lock.data.LockData.pool
 import org.sct.lock.enumeration.ConfigType
 import org.sct.lock.file.Lang
 import org.sct.lock.util.ListenerManager
-import org.sct.plugincore.PluginCore
-import org.sct.plugincore.PluginCoreAPI
-import org.sct.plugincore.util.plugin.CheckUpdate
-import org.sct.plugincore.util.plugin.FileUpdate
-import org.sct.plugincore.util.plugin.Metrics
+
 
 /**
  * @author alchemy
@@ -21,10 +22,10 @@ class Lock : JavaPlugin() {
     override fun onEnable() {
         instance = this
         Metrics(this, 6910)
-        pluginCoreAPI = PluginCore.getPluginCoreAPI()
+        easyLibAPI = EasyLib.getEasyLibAPI()
         ListenerManager.register()
         Lang.loadLang()
-        pluginCoreAPI.getEcoAPI().loadVault()
+        easyLibAPI.getEcoAPI().loadVault()
         pool!!.submit {
             FileUpdate.update(instance, "config.yml", dataFolder.path)
             FileUpdate.update(instance, config.getString(ConfigType.SETTING_LANGUAGE.path) + ".yml", dataFolder.path)
@@ -53,7 +54,7 @@ class Lock : JavaPlugin() {
         lateinit var instance: Lock
             private set
         @JvmStatic
-        lateinit var pluginCoreAPI: PluginCoreAPI
+        lateinit var easyLibAPI: EasyLibAPI
             private set
     }
 }

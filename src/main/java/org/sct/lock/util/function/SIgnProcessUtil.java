@@ -9,7 +9,7 @@ import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Config;
 import org.sct.lock.file.Lang;
-import org.sct.plugincore.util.BasicUtil;
+import org.sct.easylib.util.BasicUtil;
 
 import java.util.Map;
 

@@ -7,6 +7,8 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.sct.easylib.util.BasicUtil
+import org.sct.easylib.util.function.Inhibition
 import org.sct.lock.Lock
 import org.sct.lock.data.LockData
 import org.sct.lock.enumeration.ConfigType
@@ -20,8 +22,6 @@ import org.sct.lock.util.function.SIgnProcessUtil
 import org.sct.lock.util.player.CheckUtil
 import org.sct.lock.util.player.TeleportAPI
 import org.sct.lock.util.player.TeleportAPI.status
-import org.sct.plugincore.util.BasicUtil
-import org.sct.plugincore.util.function.Inhibition
 import java.util.concurrent.TimeUnit
 
 /**

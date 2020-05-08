@@ -13,7 +13,7 @@ import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Config;
 import org.sct.lock.file.Lang;
 import org.sct.lock.util.player.TeleportAPI;
-import org.sct.plugincore.util.BasicUtil;
+import org.sct.easylib.util.BasicUtil;
 
 import java.util.List;
 import java.util.Map;

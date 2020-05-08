@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.file.Config;
-import org.sct.plugincore.util.BasicUtil;
+import org.sct.easylib.util.BasicUtil;
 
 public class CheckUtil {
 

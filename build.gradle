@@ -27,7 +27,7 @@ dependencies {
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compileOnly 'org.bukkit:craftbukkit:1.12.2-R0.1-SNAPSHOT'
     compileOnly 'com.github.LovesAsuna:VaultAPI:-SNAPSHOT'
-    compileOnly 'com.github.LovesAsuna:PluginCore:-SNAPSHOT'
+    compileOnly 'com.github.LovesAsuna:EasyLib:-SNAPSHOT'
 }
 
 group = 'org.sct'

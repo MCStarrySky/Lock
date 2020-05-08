@@ -1,8 +1,8 @@
 package org.sct.lock.command;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.sct.easylib.util.function.command.CommandHandler;
 import org.sct.lock.command.sub.*;
-import org.sct.plugincore.util.function.command.CommandHandler;
 
 /**
  * @author LovesAsuna

@@ -1,9 +1,9 @@
 package org.sct.lock.command.sub;
 
 import org.bukkit.command.CommandSender;
+import org.sct.easylib.util.function.command.SubCommand;
 import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Lang;
-import org.sct.plugincore.util.function.command.SubCommand;
 
 import java.util.List;
 import java.util.Map;

@@ -1,9 +1,9 @@
 package org.sct.lock.util.function;
 
 import org.bukkit.Location;
-import org.sct.plugincore.util.function.stack.StackTrace;
-import org.sct.plugincore.util.reflectutil.Reflections;
-import org.sct.plugincore.util.reflectutil.VersionChecker;
+import org.sct.easylib.util.function.stack.StackTrace;
+import org.sct.easylib.util.reflectutil.Reflections;
+import org.sct.easylib.util.reflectutil.VersionChecker;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
