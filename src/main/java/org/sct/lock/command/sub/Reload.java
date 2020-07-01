@@ -14,14 +14,14 @@ public class Reload implements SubCommand {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (!sender.isOp()) {
-            sender.sendMessage(Lang.getString(LangType.LANG_NOPERMISSION));
+            sender.sendMessage(Lang.getString(LangType.LANG_NOPERMISSION.getPath()));
         }
 
-        Lang.loadLang();
+        Lang.load();
         Lock.getInstance().saveDefaultConfig();
-        Config.loadConfig();
+        Config.reload();
 
-        sender.sendMessage(Lang.getString(LangType.LANG_RELOAD));
+        sender.sendMessage(Lang.getString(LangType.LANG_RELOAD.getPath()));
         return true;
     }
 

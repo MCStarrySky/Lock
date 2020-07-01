@@ -28,12 +28,12 @@ class BlockBreak : Listener {
         val doorBelow = Location(e.player.world, BlockX.toDouble(), (BlockY + 1).toDouble(), BlockZ.toDouble()).block
         if (checkDoor(e, block) || checkDoor(e, doorAbove) || checkDoor(e, doorBelow) || checkSign(e, e.block)) {
             e.isCancelled = true
-            e.player.sendMessage(Lang.getString(LangType.LANG_DENYBREAK))
+            e.player.sendMessage(Lang.getString(LangType.LANG_DENYBREAK.path))
         }
     }
 
     private fun checkDoor(e: BlockBreakEvent, doorBlock: Block): Boolean {
-        val doorList = Config.getStringList(ConfigType.SETTING_DOORTYPE)
+        val doorList = Config.getStringList(ConfigType.SETTING_DOORTYPE.path)
 
         /*判断是否符合门类型*/for (door in doorList) {
             /*如果破坏的门符合类型*/

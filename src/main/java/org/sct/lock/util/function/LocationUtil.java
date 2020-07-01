@@ -7,7 +7,7 @@ import org.sct.lock.file.Config;
 public class LocationUtil {
     public static boolean checkWorld(Location location) {
         boolean in = false;
-        for (String world : Config.getStringList(ConfigType.SETTING_WORLDS)) {
+        for (String world : Config.getStringList(ConfigType.SETTING_WORLDS.getPath())) {
             if (world.equals(location.getWorld().getName())) {
                 in = true;
             }

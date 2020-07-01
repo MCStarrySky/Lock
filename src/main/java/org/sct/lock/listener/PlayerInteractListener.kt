@@ -35,7 +35,7 @@ class PlayerInteractListener : Listener {
         if (!InteractInhit.getInhibitStatus(player, 50)) {
             return
         }
-        val doorList = Config.getStringList(ConfigType.SETTING_DOORTYPE)
+        val doorList = Config.getStringList(ConfigType.SETTING_DOORTYPE.path)
         if (LockUtil.addStatus(e)) {
             return
         }
@@ -73,10 +73,10 @@ class PlayerInteractListener : Listener {
                         }
 
                         /*事件抑制确认*/
-                        val orignDelay = Config.getInteger(ConfigType.SETTING_ENTERDELAY)
+                        val orignDelay = Config.getInt(ConfigType.SETTING_ENTERDELAY.path)
                         val delay = (orignDelay.toDouble() / 50).toLong()
-                        Inhibition.getInhibitStatus(player, Config.getInteger(ConfigType.SETTING_ENTERDELAY), TimeUnit.MILLISECONDS)
-                        val inhit = Inhibition.getInhibitStatus(player, Config.getInteger(ConfigType.SETTING_ENTERDELAY), TimeUnit.MILLISECONDS)
+                        Inhibition.getInhibitStatus(player, Config.getInt(ConfigType.SETTING_ENTERDELAY.path), TimeUnit.MILLISECONDS)
+                        val inhit = Inhibition.getInhibitStatus(player, Config.getInt(ConfigType.SETTING_ENTERDELAY.path), TimeUnit.MILLISECONDS)
                         Bukkit.getScheduler().runTaskLaterAsynchronously(Lock.instance, { LockData.ensure?.set(player, false) }, delay)
                         LockData.ensure?.putIfAbsent(player, false)
                         val ensure = LockData.ensure?.get(player)!!
@@ -102,7 +102,7 @@ class PlayerInteractListener : Listener {
         val sign = LockData.PlayerSign?.get(e.player)
         val player = e.player
         val conditions = SIgnProcessUtil.getHoverTextAPI().getText(sign!!.location)
-        val details = BasicUtil.convert(Lang.getStringList(LangType.LANG_DoorDetail))
+        val details = BasicUtil.convert(Lang.getStringList(LangType.LANG_DoorDetail.path))
         for (detail in details) {
             var editDetail = detail
             editDetail = BasicUtil.replace(editDetail, "%conditons%", conditions)

@@ -3,13 +3,13 @@ package org.sct.lock.util.function;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.block.SignChangeEvent;
+import org.sct.easylib.util.BasicUtil;
 import org.sct.lock.Lock;
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Config;
 import org.sct.lock.file.Lang;
-import org.sct.easylib.util.BasicUtil;
 
 import java.util.Map;
 
@@ -24,11 +24,11 @@ public class SIgnProcessUtil {
     public static void processSign(SignChangeEvent e) {
         /*如果世界不匹配,返回*/
         if (!LocationUtil.checkWorld(e.getBlock().getLocation())) {
-            e.getPlayer().sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYWORLD)));
+            e.getPlayer().sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYWORLD.getPath())));
             return;
         }
 
-        if (e.getLine(0).equalsIgnoreCase(Config.getString(ConfigType.SETTING_LOCKSYMBOL)) && !e.getLine(1).isEmpty()) {
+        if (e.getLine(0).equalsIgnoreCase(Config.getString(ConfigType.SETTING_LOCKSYMBOL.getPath())) && !e.getLine(1).isEmpty()) {
             processNormalMsg(e);
             processConditions(e);
         }
@@ -38,13 +38,13 @@ public class SIgnProcessUtil {
 
     private static void processNormalMsg(SignChangeEvent e) {
         /*替换第一行Symbol*/
-        e.setLine(0, BasicUtil.convert(Config.getString(ConfigType.SETTING_SYMBOLREPLACE)));
+        e.setLine(0, BasicUtil.convert(Config.getString(ConfigType.SETTING_SYMBOLREPLACE.getPath())));
 
         /*替换第四行为玩家名*/
         e.setLine(3, "§l" + e.getPlayer().getName());
 
         /*替换第二行价格*/
-        e.setLine(1, BasicUtil.convert(Config.getString(ConfigType.SETTING_CHARGE) + e.getLine(1)));
+        e.setLine(1, BasicUtil.convert(Config.getString(ConfigType.SETTING_CHARGE.getPath()) + e.getLine(1)));
     }
 
     private static void processConditions(SignChangeEvent e) {
@@ -53,19 +53,19 @@ public class SIgnProcessUtil {
         String line = e.getLine(2);
         boolean direction = false;
 
-        String flagEnter = Config.getString(ConfigType.SETTING_FLAGENTER);
-        String enterReplace = BasicUtil.convert(Config.getString(ConfigType.SETTING_ENTERREPLACE));
+        String flagEnter = Config.getString(ConfigType.SETTING_FLAGENTER.getPath());
+        String enterReplace = BasicUtil.convert(Config.getString(ConfigType.SETTING_ENTERREPLACE.getPath()));
 
-        String flagLeave = Config.getString(ConfigType.SETTING_FLAGLEAVE);
-        String leaveReplace = BasicUtil.convert(Config.getString(ConfigType.SETTING_LEAVEREPLACE));
+        String flagLeave = Config.getString(ConfigType.SETTING_FLAGLEAVE.getPath());
+        String leaveReplace = BasicUtil.convert(Config.getString(ConfigType.SETTING_LEAVEREPLACE.getPath()));
 
-        String flagEmpty = Config.getString(ConfigType.SETTING_FLAGEMPTY);
-        String emptyReplace = BasicUtil.convert(Config.getString(ConfigType.SETTING_EMPTYREPLACE));
+        String flagEmpty = Config.getString(ConfigType.SETTING_FLAGEMPTY.getPath());
+        String emptyReplace = BasicUtil.convert(Config.getString(ConfigType.SETTING_EMPTYREPLACE.getPath()));
 
-        String flagMoney = Config.getString(ConfigType.SETTING_FLAGMONEY);
+        String flagMoney = Config.getString(ConfigType.SETTING_FLAGMONEY.getPath());
 
-        String flagEffect = Config.getString(ConfigType.SETTING_FLAGEFFECT);
-        String effectReplace = BasicUtil.convert(Config.getString(ConfigType.SETTING_EFFECTREPLACE));
+        String flagEffect = Config.getString(ConfigType.SETTING_FLAGEFFECT.getPath());
+        String effectReplace = BasicUtil.convert(Config.getString(ConfigType.SETTING_EFFECTREPLACE.getPath()));
         if (line.contains(flagEnter)) {
             buffer.append(enterReplace);
             direction = true;
@@ -94,7 +94,7 @@ public class SIgnProcessUtil {
             int money = BasicUtil.ExtraceInt(line);
             Map<String, Boolean> moneyDetail = LockUtil.getMoneydetail(line, 0, 0);
             String symbol = moneyDetail.keySet().iterator().next();
-            buffer.append(BasicUtil.convert(BasicUtil.replace(Config.getString(ConfigType.SETTING_MONEYREPLACE), "%needmoney", symbol + money)));
+            buffer.append(BasicUtil.convert(BasicUtil.replace(Config.getString(ConfigType.SETTING_MONEYREPLACE.getPath()), "%needmoney", symbol + money)));
         }
 
         /*药水效果条件*/

@@ -1,11 +1,15 @@
 package org.sct.lock.util.function;
 
 import com.google.common.collect.Maps;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.sct.easylib.util.BasicUtil;
 import org.sct.lock.Lock;
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
@@ -13,7 +17,6 @@ import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Config;
 import org.sct.lock.file.Lang;
 import org.sct.lock.util.player.TeleportAPI;
-import org.sct.easylib.util.BasicUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -68,8 +71,8 @@ public class LockUtil {
     public static TeleportAPI.status getDirection(Block block) {
         Sign sign = (Sign) block.getState();
         String orign = sign.getLine(2);
-        String enter = BasicUtil.convert(Config.getString(ConfigType.SETTING_ENTERREPLACE));
-        String leave = BasicUtil.convert(Config.getString(ConfigType.SETTING_LEAVEREPLACE));
+        String enter = BasicUtil.convert(Config.getString(ConfigType.SETTING_ENTERREPLACE.getPath()));
+        String leave = BasicUtil.convert(Config.getString(ConfigType.SETTING_LEAVEREPLACE.getPath()));
         if (orign.contains(enter) && orign.contains(leave)) {
             return TeleportAPI.status.DOUBLE;
         } else if (orign.contains(enter)) {
@@ -88,9 +91,9 @@ public class LockUtil {
      **/
     public static String getConditions(Block block) {
         String orign = SIgnProcessUtil.getHoverTextAPI().getText(block.getLocation());
-        String empty = BasicUtil.convert(Config.getString(ConfigType.SETTING_EMPTYREPLACE));
-        String money = BasicUtil.convert(Config.getString(ConfigType.SETTING_FLAGMONEY));
-        String effect = BasicUtil.convert(Config.getString(ConfigType.SETTING_EFFECTREPLACE));
+        String empty = BasicUtil.convert(Config.getString(ConfigType.SETTING_EMPTYREPLACE.getPath()));
+        String money = BasicUtil.convert(Config.getString(ConfigType.SETTING_FLAGMONEY.getPath()));
+        String effect = BasicUtil.convert(Config.getString(ConfigType.SETTING_EFFECTREPLACE.getPath()));
         StringBuffer restriction = new StringBuffer();
         if (orign.contains(empty)) {
             restriction.append("1");
@@ -147,14 +150,14 @@ public class LockUtil {
     }
 
     public static boolean addStatus(PlayerInteractEvent e) {
-        List<String> doorList = Config.getStringList(ConfigType.SETTING_DOORTYPE);
+        List<String> doorList = Config.getStringList(ConfigType.SETTING_DOORTYPE.getPath());
 
         if (LockData.INSTANCE.getAddStatus().get("door")) {
             doorList.add(e.getClickedBlock().getLocation().getBlock().getType().toString());
-            Config.setStringList(ConfigType.SETTING_DOORTYPE, doorList);
+            Config.setStringList(ConfigType.SETTING_DOORTYPE.getPath(), doorList);
             Lock.getInstance().saveConfig();
             LockData.INSTANCE.getAddStatus().put("door", false);
-            e.getPlayer().sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPESUCCESS), "%type", "DOOR")));;
+            e.getPlayer().sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPESUCCESS.getPath()), "%type", "DOOR")));;
             e.setCancelled(true);
             return true;
         }

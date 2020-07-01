@@ -22,24 +22,24 @@ public class addType implements SubCommand {
         boolean error = true;
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_NOTAPLAYER)));
+            sender.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_NOTAPLAYER.getPath())));
             return false;
         }
 
         if (!sender.isOp()) {
-            sender.sendMessage(Lang.getString(LangType.LANG_NOPERMISSION));
+            sender.sendMessage(Lang.getString(LangType.LANG_NOPERMISSION.getPath()));
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("addType")) {
             if ("door".equalsIgnoreCase(args[1])) {
                 LockData.INSTANCE.getAddStatus().put("door", true);
-                sender.sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPE), "%type", "DOOR")));
+                sender.sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPE.getPath()), "%type", "DOOR")));
                 error = false;
             }
         }
 
         if (error) {
-            sender.sendMessage(Lang.getString(LangType.LANG_COMMANDERROR));
+            sender.sendMessage(Lang.getString(LangType.LANG_COMMANDERROR.getPath()));
         }
         return true;
     }

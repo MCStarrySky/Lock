@@ -7,6 +7,7 @@ import org.sct.easylib.EasyLibAPI
 import org.sct.easylib.util.plugin.CheckUpdate
 import org.sct.easylib.util.plugin.FileUpdate
 import org.sct.easylib.util.plugin.Metrics
+import org.sct.easylib.util.reflectutil.ClassUtil
 import org.sct.lock.command.SubCommandHandler
 import org.sct.lock.data.LockData.pool
 import org.sct.lock.enumeration.ConfigType
@@ -24,7 +25,8 @@ class Lock : JavaPlugin() {
         Metrics(this, 6910)
         easyLibAPI = EasyLib.getEasyLibAPI()
         ListenerManager.register()
-        Lang.loadLang()
+        ClassUtil.forceLoad(Lang::class.java)
+        Lang.load()
         easyLibAPI.getEcoAPI().loadVault()
         pool!!.submit {
             FileUpdate.update(instance, "config.yml", dataFolder.path)
@@ -53,6 +55,7 @@ class Lock : JavaPlugin() {
         @JvmStatic
         lateinit var instance: Lock
             private set
+
         @JvmStatic
         lateinit var easyLibAPI: EasyLibAPI
             private set

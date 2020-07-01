@@ -4,10 +4,10 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
+import org.sct.easylib.util.BasicUtil;
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.file.Config;
-import org.sct.easylib.util.BasicUtil;
 
 public class CheckUtil {
 
@@ -45,7 +45,7 @@ public class CheckUtil {
             return false;
         }
         Sign Sign = (Sign) sign.getState();
-        if (Sign.getLine(0).equalsIgnoreCase(BasicUtil.convert(Config.getString(ConfigType.SETTING_SYMBOLREPLACE)))) {
+        if (Sign.getLine(0).equalsIgnoreCase(BasicUtil.convert(Config.getString(ConfigType.SETTING_SYMBOLREPLACE.getPath())))) {
             return true;
         }
         return false;

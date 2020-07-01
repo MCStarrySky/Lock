@@ -21,7 +21,7 @@ class SignChangeListener : Listener {
         if (LockData.PlayerDoorLocation?.get(e.player) == null) {
             return
         }
-        for (doors in Config.getStringList(ConfigType.SETTING_DOORTYPE)) {
+        for (doors in Config.getStringList(ConfigType.SETTING_DOORTYPE.path)) {
             if (LockData.PlayerDoorLocation?.get(e.player)!!.block.type == Material.getMaterial(doors)) {
                 cancel = false
                 break

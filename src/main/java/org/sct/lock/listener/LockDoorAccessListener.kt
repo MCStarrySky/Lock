@@ -31,7 +31,7 @@ class LockDoorAccessListener : Listener {
         val direction = LockUtil.getDirection(e.block)
         if (direction != status.DOUBLE && e.payer.name != e.owner.name) {
             if (s != direction) {
-                e.payer.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYDIRECTION)))
+                e.payer.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYDIRECTION.path)))
                 return
             }
         }
@@ -44,7 +44,7 @@ class LockDoorAccessListener : Listener {
             if (conditons.isNotEmpty()) {
                 if (conditons.contains("1")) {
                     if (!InventoryUtil.isInvEmpty(e.payer)) {
-                        e.payer.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYNOTEMPTYINV)))
+                        e.payer.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYNOTEMPTYINV.path)))
                         return
                     }
                 }
@@ -56,13 +56,13 @@ class LockDoorAccessListener : Listener {
                     val symbol = moneyDetail.keys.iterator().next()
                     val access = moneyDetail[symbol]!!
                     if (!access && !symbol.isEmpty()) {
-                        e.payer.sendMessage(BasicUtil.replace(Lang.getString(LangType.LANG_DENYMONEY), "%needmoney", symbol + money))
+                        e.payer.sendMessage(BasicUtil.replace(Lang.getString(LangType.LANG_DENYMONEY.path), "%needmoney", symbol + money))
                         return
                     }
                 }
                 if (conditons.contains("3")) {
                     if (!e.payer.activePotionEffects.isEmpty()) {
-                        e.payer.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYHAVEEFFECT)))
+                        e.payer.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYHAVEEFFECT.path)))
                         return
                     }
                 }
@@ -70,23 +70,23 @@ class LockDoorAccessListener : Listener {
 
             /*如果余额不足*/
             if (!Lock.easyLibAPI.ecoAPI.has(e.payer, charge.toDouble())) {
-                e.payer.sendMessage(Lang.getString(LangType.LANG_NOTENOUGHMONEY))
+                e.payer.sendMessage(Lang.getString(LangType.LANG_NOTENOUGHMONEY.path))
                 return
             }
             teleportAPI.Tp(status.ENTER, e.payer)
             /*payer付钱部分*/
 
             /*如果owner是vip或权限未设置*/
-            if (!"".equals(Config.getString(ConfigType.SETTING_VIPALLOWED), ignoreCase = true) || (LockUtil.getOwner(e.block) as Player).hasPermission(Config.getString(ConfigType.SETTING_VIPALLOWED))) {
+            if (!"".equals(Config.getString(ConfigType.SETTING_VIPALLOWED.path), ignoreCase = true) || (LockUtil.getOwner(e.block) as Player).hasPermission(Config.getString(ConfigType.SETTING_VIPALLOWED.path))) {
                 Lock.easyLibAPI.ecoAPI.take(e.payer, charge.toDouble())
                 Lock.easyLibAPI.ecoAPI.give(LockUtil.getOwner(e.block), charge.toDouble())
             } else {
                 /*owner不是vip,扣税*/
                 Lock.easyLibAPI.ecoAPI.take(e.payer, charge.toDouble())
-                charge = (1 - Config.getInteger(ConfigType.SETTING_TAXPERCENT)) * charge
+                charge = (1 - Config.getInt(ConfigType.SETTING_TAXPERCENT.path)) * charge
                 Lock.easyLibAPI.ecoAPI.give(LockUtil.getOwner(e.block), charge.toDouble())
             }
-            e.payer.sendMessage(BasicUtil.replace(Lang.getString(LangType.LANG_ENTER), "%charge", charge))
+            e.payer.sendMessage(BasicUtil.replace(Lang.getString(LangType.LANG_ENTER.path), "%charge", charge))
         } else {
             teleportAPI.Tp(status.LEAVE, e.payer)
         }

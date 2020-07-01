@@ -12,7 +12,7 @@ public class Help implements SubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        List<String> helpList = Lang.getStringList(LangType.LANGUAGE_COMMANDHELP);
+        List<String> helpList = Lang.getStringList(LangType.LANGUAGE_COMMANDHELP.getPath());
 
         for (String cmd : helpList) {
             sender.sendMessage(cmd);

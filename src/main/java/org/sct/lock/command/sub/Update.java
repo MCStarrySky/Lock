@@ -18,7 +18,7 @@ public class Update implements SubCommand {
         boolean error = true;
 
         if (!sender.isOp()) {
-            sender.sendMessage(Lang.getString(LangType.LANG_NOPERMISSION));
+            sender.sendMessage(Lang.getString(LangType.LANG_NOPERMISSION.getPath()));
         }
 
         if (args.length == 2) {
@@ -41,7 +41,7 @@ public class Update implements SubCommand {
         }
 
         if (error) {
-            sender.sendMessage(Lang.getString(LangType.LANG_COMMANDERROR));
+            sender.sendMessage(Lang.getString(LangType.LANG_COMMANDERROR.getPath()));
         }
         return true;
     }
