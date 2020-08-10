@@ -129,7 +129,7 @@ public class TeleportHandler {
         } else if (getBlockFace(sign.getRelative(-1, 0, 0))) {
             blockFace = BlockFace.EAST;
         }
-System.out.println(blockFace);
+
         playerX = player.getLocation().getBlockX();
         playerY = player.getLocation().getBlockY();
         playerZ = player.getLocation().getBlockZ();
