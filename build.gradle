@@ -31,7 +31,7 @@ dependencies {
 }
 
 group = 'org.sct'
-version = '1.5.5-Alpha'
+version = '1.6.0-Alpha'
 description = 'Lock'
 sourceCompatibility = '8'
 
