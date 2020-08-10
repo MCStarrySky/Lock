@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2020/4/3 12:53
  */
 
-public class InteractInhit {
+public class InteractInhibit {
 
     public static boolean getInhibitStatus(Player player, int milliseconds) {
         return getInhibitStatus(player.getName(), milliseconds);

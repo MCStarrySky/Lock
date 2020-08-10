@@ -1,6 +1,5 @@
 package org.sct.lock.util.player;
 
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -15,11 +14,11 @@ public class CheckUtil {
 
     /**
      * @param player 交互玩家(如果单纯检测而不存进map则保持为null)
-     * @param door 门
+     * @param door   门
      * @return 是否为收费门牌子
      */
-    public static boolean CheckSign(Player player, Block door) {
-        Block aboveDoor = null;
+    public static boolean checkSign(Player player, Block door) {
+        Block aboveDoor;
         for (int i = 1; i <= 2; i++) {
             aboveDoor = door.getRelative(0, i, 0);
             setFourSign(aboveDoor);
@@ -27,10 +26,7 @@ public class CheckUtil {
                 Block sign = FourSign[j];
                 if (findSign(sign)) {
                     if (player != null) {
-                        int x = sign.getLocation().getBlockX();
-                        int y = sign.getLocation().getBlockY();
-                        int z = sign.getLocation().getBlockZ();
-                        storeData(player, door, x, y, z);
+                        storeData(player, door, sign);
                     }
                     return true;
                 }
@@ -40,27 +36,23 @@ public class CheckUtil {
         return false;
     }
 
-    public static boolean findSign(Block sign) {
-        if (!sign.getType().name().contains("SIGN")) {
+    public static boolean findSign(Block signBlock) {
+        if (!signBlock.getType().name().contains("SIGN")) {
             return false;
         }
-        Sign Sign = (Sign) sign.getState();
-        if (Sign.getLine(0).equalsIgnoreCase(BasicUtil.convert(Config.getString(ConfigType.SETTING_SYMBOLREPLACE.getPath())))) {
-            return true;
-        }
-        return false;
+        Sign sign = (Sign) signBlock.getState();
+        return sign.getLine(0).equalsIgnoreCase(BasicUtil.convert(Config.getString(ConfigType.SETTING_SYMBOLREPLACE.getPath())));
     }
 
-    private static void storeData(Player player, Block door, int x, int y, int z) {
-
-        //玩家交互的门(忽视高度)
+    private static void storeData(Player player, Block door, Block sign) {
         if (player != null) {
-            LockData.INSTANCE.getPlayerBlock().put(player, door);
-        }
+            //玩家交互的门(忽视高度)
+            //LockData.INSTANCE.getPlayerBlock().put(player, door);
+            LockData.INSTANCE.getPlayerDoorLocation().put(player, door.getLocation());
 
-        //存入玩家交互的门上方的牌子
-        if (player != null) {
-            LockData.INSTANCE.getPlayerSign().put(player, new Location(player.getWorld(), x, y, z).getBlock());
+            //存入玩家交互的门上方的牌子
+            //LockData.INSTANCE.getPlayerSign().put(player, new Location(player.getWorld(), x, y, z).getBlock());
+            LockData.INSTANCE.getPlayerSignLocation().put(player, sign.getLocation());
         }
     }
 

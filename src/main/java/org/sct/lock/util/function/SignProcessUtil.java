@@ -18,8 +18,8 @@ import java.util.Map;
  * @date 2020/3/23 14:06
  */
 
-public class SIgnProcessUtil {
-    private static HoverTextAPI hoverTextAPI = new HoverTextAPI();
+public class SignProcessUtil {
+    private static final HoverTextAPI hoverTextAPI = new HoverTextAPI();
 
     public static void processSign(SignChangeEvent e) {
         /*如果世界不匹配,返回*/

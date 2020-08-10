@@ -27,7 +27,7 @@ class Lock : JavaPlugin() {
         ListenerManager.register()
         ClassUtil.forceLoad(Lang::class.java)
         Lang.load()
-        easyLibAPI.getEcoAPI().loadVault()
+        easyLibAPI.ecoAPI.loadVault()
         pool!!.submit {
             FileUpdate.update(instance, "config.yml", dataFolder.path)
             FileUpdate.update(instance, config.getString(ConfigType.SETTING_LANGUAGE.path) + ".yml", dataFolder.path)

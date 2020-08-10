@@ -7,7 +7,7 @@ import org.bukkit.event.block.SignChangeEvent
 import org.sct.lock.data.LockData
 import org.sct.lock.enumeration.ConfigType
 import org.sct.lock.file.Config
-import org.sct.lock.util.function.SIgnProcessUtil
+import org.sct.lock.util.function.SignProcessUtil
 
 /**
  * @author LovesAsuna
@@ -31,7 +31,7 @@ class SignChangeListener : Listener {
             return
         }
         if (e.player == LockData.PlayerSignLocation?.inverse()?.get(location)) {
-            SIgnProcessUtil.processSign(e)
+            SignProcessUtil.processSign(e)
         }
     }
 }

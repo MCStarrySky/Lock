@@ -39,7 +39,7 @@ class BlockBreak : Listener {
             /*如果破坏的门符合类型*/
             if (doorBlock.type == Material.getMaterial(door)) {
                 /*如果是自动收费门 */
-                if (CheckUtil.CheckSign(e.player, doorBlock)) {
+                if (CheckUtil.checkSign(e.player, doorBlock)) {
                     val owner = LockUtil.getOwner(LockData.PlayerSign?.get(e.player))
                     if (owner.name != e.player.name) {
                         return true

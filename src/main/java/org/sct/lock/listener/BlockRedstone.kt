@@ -22,7 +22,7 @@ class BlockRedstone : Listener {
         if (!isDoor) {
             return
         }
-        if (CheckUtil.CheckSign(null, e.block)) {
+        if (CheckUtil.checkSign(null, e.block)) {
             e.newCurrent = e.oldCurrent
         }
     }
