@@ -15,7 +15,7 @@
 * /lock help 查看帮助
 * /lock reload 重载插件
 * /lock update 插件更新
-* /lock addtype sign/door 添加类型
+* /lock addtype door 添加类型
 * 剩下的全靠插件处理
 
  
