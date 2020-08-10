@@ -26,12 +26,6 @@ object LockData {
     /*玩家潜行的状态*/
     var PlayerisSneak: MutableMap<Player, Boolean>? = null
 
-    /*玩家交互的门上方的牌子*/
-    var PlayerSign: MutableMap<Player, Block>? = null
-
-    /*玩家交互的门(忽视高度)*/
-    var PlayerBlock: MutableMap<Player, Block>? = null
-
     /*插件专用线程池*/
     var pool: ThreadPoolExecutor? = null
 
@@ -52,8 +46,6 @@ object LockData {
         PlayerSignLocation = HashBiMap.create()
         addStatus = Maps.newHashMap()
         PlayerisSneak = Maps.newHashMap()
-        PlayerSign = Maps.newHashMap()
-        PlayerBlock = Maps.newHashMap()
         inhibition = Maps.newHashMap()
         ensure = Maps.newHashMap()
         pool = ThreadPoolExecutor(10, 25, 5, TimeUnit.MINUTES, ArrayBlockingQueue(100), LockThreadFactory("[Lock]"))
