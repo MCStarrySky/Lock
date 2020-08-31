@@ -1,7 +1,6 @@
 package org.sct.lock.util.function;
 
 import org.bukkit.Location;
-import org.sct.easylib.util.function.stack.StackTrace;
 import org.sct.easylib.util.reflectutil.Reflections;
 import org.sct.easylib.util.reflectutil.VersionChecker;
 
@@ -83,7 +82,7 @@ public class HoverTextAPI {
 
             lines = tileEntitySign.getDeclaredField("lines");
         } catch (ReflectiveOperationException e) {
-            StackTrace.printStackTrace(e);
+            e.printStackTrace();
         }
     }
 
@@ -100,7 +99,7 @@ public class HoverTextAPI {
 
             setChatHoverable.invoke(ChatModifier, ChatHoverable);
         } catch (ReflectiveOperationException | NullPointerException e) {
-            StackTrace.printStackTrace(e);
+            e.printStackTrace();
         }
     }
 
@@ -124,7 +123,7 @@ public class HoverTextAPI {
             Method getText = this.IChatBaseComponent.getDeclaredMethod("getText");
             return (String) getText.invoke(IChatBaseComponent);
         } catch (ReflectiveOperationException e) {
-            StackTrace.printStackTrace(e);
+            e.printStackTrace();
             return null;
         }
     }
@@ -152,7 +151,7 @@ public class HoverTextAPI {
                 return null;
             }
         } catch (ReflectiveOperationException e) {
-            StackTrace.printStackTrace(e);
+            e.printStackTrace();
             return null;
         }
     }
@@ -163,7 +162,7 @@ public class HoverTextAPI {
         try {
             return (Class<Enum<?>>) ChatHoverable.getClasses()[0];
         } catch (Exception e) {
-            StackTrace.printStackTrace(e);
+            e.printStackTrace();
             return null;
         }
     }

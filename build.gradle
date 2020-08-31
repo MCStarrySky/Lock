@@ -5,15 +5,10 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
-
-    maven {
-        url 'https://repo.codemc.io/repository/nms/'
-    }
-
-    jcenter()
-
     mavenCentral()
+    maven { url 'https://repo.codemc.io/repository/nms/' }
+    jcenter()
+    mavenLocal()
 }
 
 defaultTasks("shadowJar")
@@ -22,7 +17,7 @@ dependencies {
     compileOnly 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     compileOnly 'org.bukkit:craftbukkit:1.12.2-R0.1-SNAPSHOT'
     compileOnly 'org.sct.vault:VaultAPI:1.7'
-    compileOnly 'me.lovesasuna:easylib:2.4'
+    compileOnly 'me.lovesasuna:EasyLib:2.4.2'
 }
 
 group = 'org.sct'
