@@ -16,7 +16,7 @@ import java.util.Map;
  * @date 2020/2/15 20:29
  */
 
-public class addType implements SubCommand {
+public class AddType implements SubCommand {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         boolean error = true;

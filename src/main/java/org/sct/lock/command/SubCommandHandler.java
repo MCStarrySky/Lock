@@ -12,7 +12,7 @@ import org.sct.lock.command.sub.*;
 public class SubCommandHandler extends CommandHandler {
     public SubCommandHandler(JavaPlugin instance, String cmd) {
         super(instance, cmd);
-        registerSubCommand("addtype", new addType());
+        registerSubCommand("addtype", new AddType());
         registerSubCommand("help", new Help());
         registerSubCommand("info", new Info());
         registerSubCommand("reload", new Reload());
