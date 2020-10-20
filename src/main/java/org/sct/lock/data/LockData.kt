@@ -5,7 +5,6 @@ import com.google.common.collect.HashBiMap
 import com.google.common.collect.Maps
 import org.bukkit.Location
 import org.bukkit.OfflinePlayer
-import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.sct.lock.util.function.LockThreadFactory
 import java.util.concurrent.ArrayBlockingQueue
@@ -18,39 +17,31 @@ import java.util.concurrent.TimeUnit
  */
 object LockData {
     /*玩家-牌子坐标*/
-    var PlayerSignLocation: BiMap<Player, Location>? = null
+    var PlayerSignLocation: BiMap<Player, Location> = HashBiMap.create()
 
     /*玩家-门坐标*/
-    var PlayerDoorLocation: BiMap<Player, Location>? = null
+    var PlayerDoorLocation: BiMap<Player, Location> = HashBiMap.create()
 
     /*玩家潜行的状态*/
-    var PlayerisSneak: MutableMap<Player, Boolean>? = null
+    var PlayerisSneak: MutableMap<Player, Boolean> = Maps.newHashMap()
 
     /*插件专用线程池*/
-    var pool: ThreadPoolExecutor? = null
+    var pool: ThreadPoolExecutor = ThreadPoolExecutor(10, 25, 5, TimeUnit.MINUTES, ArrayBlockingQueue(100), LockThreadFactory("[Lock]"))
 
     /*交互事件抑制器*/
-    var inhibition: MutableMap<OfflinePlayer, Boolean>? = null
+    var inhibition: MutableMap<OfflinePlayer, Boolean> = Maps.newHashMap()
 
     /*插件专用计划线程池*/
-    var scheduledpool: ScheduledThreadPoolExecutor? = null
+    var scheduledpool: ScheduledThreadPoolExecutor = ScheduledThreadPoolExecutor(15)
 
     /*添加配置状态*/
-    var addStatus: MutableMap<String, Boolean>? = null
+    var addStatus: MutableMap<String, Boolean> = Maps.newHashMap()
 
     /*玩家进门确认状态*/
-    var ensure: MutableMap<Player, Boolean>? = null
+    var ensure: MutableMap<Player, Boolean> = Maps.newHashMap()
 
     init {
-        PlayerDoorLocation = HashBiMap.create()
-        PlayerSignLocation = HashBiMap.create()
-        addStatus = Maps.newHashMap()
-        PlayerisSneak = Maps.newHashMap()
-        inhibition = Maps.newHashMap()
-        ensure = Maps.newHashMap()
-        pool = ThreadPoolExecutor(10, 25, 5, TimeUnit.MINUTES, ArrayBlockingQueue(100), LockThreadFactory("[Lock]"))
-        scheduledpool = ScheduledThreadPoolExecutor(15)
-        addStatus?.put("door", false)
+        addStatus["door"] = false
     }
 
 }
