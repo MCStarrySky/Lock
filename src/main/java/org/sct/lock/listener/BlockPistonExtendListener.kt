@@ -1,6 +1,5 @@
 package org.sct.lock.listener
 
-import org.bukkit.Bukkit
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
 import org.bukkit.event.EventHandler
