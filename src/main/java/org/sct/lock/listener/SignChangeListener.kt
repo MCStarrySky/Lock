@@ -18,11 +18,11 @@ class SignChangeListener : Listener {
     fun onSignChange(e: SignChangeEvent) {
         val location = e.block.location
         var cancel = true
-        if (LockData.PlayerDoorLocation?.get(e.player) == null) {
+        if (LockData.PlayerDoorLocation[e.player] == null) {
             return
         }
         for (doors in Config.getStringList(ConfigType.SETTING_DOORTYPE.path)) {
-            if (LockData.PlayerDoorLocation?.get(e.player)!!.block.type == Material.getMaterial(doors)) {
+            if (LockData.PlayerDoorLocation[e.player]!!.block.type == Material.getMaterial(doors)) {
                 cancel = false
                 break
             }
@@ -30,7 +30,7 @@ class SignChangeListener : Listener {
         if (cancel) {
             return
         }
-        if (e.player == LockData.PlayerSignLocation?.inverse()?.get(location)) {
+        if (e.player == LockData.PlayerSignLocation.inverse()?.get(location)) {
             SignProcessUtil.processSign(e)
         }
     }
