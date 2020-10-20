@@ -8,6 +8,10 @@ import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.file.Config;
 
+/**
+ * @author LovesAsuna
+ * @date 2020/10/19 23:14
+ **/
 public class CheckUtil {
 
     private static Block[] FourSign;
@@ -47,11 +51,9 @@ public class CheckUtil {
     private static void storeData(Player player, Block door, Block sign) {
         if (player != null) {
             //玩家交互的门(忽视高度)
-            //LockData.INSTANCE.getPlayerBlock().put(player, door);
             LockData.INSTANCE.getPlayerDoorLocation().put(player, door.getLocation());
 
             //存入玩家交互的门上方的牌子
-            //LockData.INSTANCE.getPlayerSign().put(player, new Location(player.getWorld(), x, y, z).getBlock());
             LockData.INSTANCE.getPlayerSignLocation().put(player, sign.getLocation());
         }
     }
