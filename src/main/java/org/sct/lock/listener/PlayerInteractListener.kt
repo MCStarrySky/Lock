@@ -53,7 +53,7 @@ class PlayerInteractListener : Listener {
             }
             for (door in doorList) {
                 // 如果玩家不在潜行
-                if (LockData.PlayerisSneak!![player] == null) {
+                if (LockData.PlayerisSneak[player] == null) {
                     return
                 }
                 val clickedBlockType = e.clickedBlock.location.block.type
@@ -80,13 +80,13 @@ class PlayerInteractListener : Listener {
                         val delay = (originDelay.toDouble() / 50).toLong()
                         Inhibition.getInhibitStatus(player, Config.getInt(ConfigType.SETTING_ENTERDELAY.path), TimeUnit.MILLISECONDS)
                         val inhibit = Inhibition.getInhibitStatus(player, Config.getInt(ConfigType.SETTING_ENTERDELAY.path), TimeUnit.MILLISECONDS)
-                        Bukkit.getScheduler().runTaskLaterAsynchronously(Lock.instance, { LockData.ensure?.set(player, false) }, delay)
-                        LockData.ensure?.putIfAbsent(player, false)
-                        val ensure = LockData.ensure?.get(player)!!
+                        Bukkit.getScheduler().runTaskLaterAsynchronously(Lock.instance, { LockData.ensure[player] = false }, delay)
+                        LockData.ensure.putIfAbsent(player, false)
+                        val ensure = LockData.ensure[player]!!
                         if (!inhibit && !ensure) {
                             /*提示*/
                             showDoorDetail(e, delay / 20)
-                            LockData.ensure?.set(player, true)
+                            LockData.ensure[player] = true
                             return
                         }
                         if (!inhibit && ensure) {
@@ -102,7 +102,7 @@ class PlayerInteractListener : Listener {
     }
 
     private fun showDoorDetail(e: PlayerInteractEvent, delay: Long) {
-        val signLocation = LockData.PlayerSignLocation!!.get(e.player)
+        val signLocation = LockData.PlayerSignLocation[e.player]
         val player = e.player
         val conditions = SignProcessUtil.getHoverTextAPI().getText(signLocation)
         val details = BasicUtil.convert(Lang.getStringList(LangType.LANG_DoorDetail.path))
@@ -115,7 +115,7 @@ class PlayerInteractListener : Listener {
     }
 
     private fun callEvent(player: Player, teleportHandler: TeleportHandler) {
-        val sign = LockData.PlayerSignLocation!![player]?.block
+        val sign = LockData.PlayerSignLocation[player]?.block
         Bukkit.getPluginManager().callEvent(PlayerAccessLockDoorEvent(player,
                 LockUtil.getOwner(sign),
                 teleportHandler,

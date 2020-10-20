@@ -40,7 +40,7 @@ class BlockBreakListener : Listener {
             if (doorBlock.type == Material.getMaterial(door)) {
                 /*如果是自动收费门 */
                 if (CheckUtil.checkSign(e.player, doorBlock)) {
-                    val owner = LockUtil.getOwner(LockData.PlayerSignLocation!![e.player]?.block)
+                    val owner = LockUtil.getOwner(LockData.PlayerSignLocation[e.player]?.block)
                     if (owner.name != e.player.name) {
                         return true
                     }
