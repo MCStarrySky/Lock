@@ -4,6 +4,9 @@ import org.bukkit.Location;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.file.Config;
 
+/**
+ * @author LovesAsuna
+ */
 public class LocationUtil {
     public static boolean checkWorld(Location location) {
         boolean in = false;

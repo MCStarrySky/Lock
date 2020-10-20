@@ -14,7 +14,7 @@ import org.sct.lock.file.Lang
 import org.sct.lock.util.function.LockUtil
 import org.sct.lock.util.player.CheckUtil
 
-class BlockBreak : Listener {
+class BlockBreakListener : Listener {
     @EventHandler
     fun onBlockBreak(e: BlockBreakEvent) {
         if (e.player.isOp) {
