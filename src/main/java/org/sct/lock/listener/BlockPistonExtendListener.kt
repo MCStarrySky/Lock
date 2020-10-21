@@ -2,11 +2,14 @@ package org.sct.lock.listener
 
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPistonExtendEvent
 import org.sct.lock.Lock
 import org.sct.lock.enumeration.ConfigType
+import org.sct.lock.enumeration.LangType
+import org.sct.lock.file.Lang
 import org.sct.lock.util.player.CheckUtil
 
 /**
@@ -32,7 +35,9 @@ class BlockPistonExtendListener : Listener {
 
             if (CheckUtil.checkSign(null, door)) {
                 e.isCancelled = true
-                TODO("缺少提示")
+                TODO("获取玩家")
+                val player : Player? = null
+                player?.sendMessage(Lang.getString(LangType.LANG_DENYBREAK.path))
             }
         }
 
