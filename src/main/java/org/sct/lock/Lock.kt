@@ -28,7 +28,7 @@ class Lock : JavaPlugin() {
         ClassUtil.forceLoad(Lang::class.java)
         Lang.load()
         easyLibAPI.ecoAPI.loadVault()
-        pool!!.submit {
+        pool.submit {
             FileUpdate.update(instance, "config.yml", dataFolder.path)
             FileUpdate.update(instance, config.getString(ConfigType.SETTING_LANGUAGE.path) + ".yml", dataFolder.path)
             CheckUpdate.check(Bukkit.getConsoleSender(), instance, "LovesAsuna", "ZDRlZWY4ZDZlMzIyNDExYjk3NThlMGNiN2ZmYzg3NTRiOGIwZDUzZA==")
