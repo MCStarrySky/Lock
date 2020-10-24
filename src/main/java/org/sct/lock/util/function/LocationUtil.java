@@ -1,8 +1,13 @@
 package org.sct.lock.util.function;
 
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.file.Config;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LovesAsuna
@@ -16,5 +21,10 @@ public class LocationUtil {
             }
         }
         return in;
+    }
+
+    public static List<Entity> getNearbyEntities(Location loc, int range) {
+        World world = loc.getWorld();
+        return new ArrayList<>(world.getNearbyEntities(loc, range, range, range));
     }
 }
