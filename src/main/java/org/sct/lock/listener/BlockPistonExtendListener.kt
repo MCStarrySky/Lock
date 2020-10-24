@@ -1,15 +1,19 @@
 package org.sct.lock.listener
 
+import org.bukkit.Bukkit
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPistonExtendEvent
+import org.sct.easylib.util.BasicUtil
 import org.sct.lock.Lock
 import org.sct.lock.enumeration.ConfigType
 import org.sct.lock.enumeration.LangType
 import org.sct.lock.file.Lang
+import org.sct.lock.util.function.LocationUtil
 import org.sct.lock.util.player.CheckUtil
 
 /**
@@ -35,12 +39,12 @@ class BlockPistonExtendListener : Listener {
 
             if (CheckUtil.checkSign(null, door)) {
                 e.isCancelled = true
-                TODO("获取玩家")
-                val player : Player? = null
-                player?.sendMessage(Lang.getString(LangType.LANG_DENYBREAK.path))
+                val list = LocationUtil.getNearbyEntities(e.block.location, 10)
+                list.filterIsInstance<Player>().forEach {
+                    it.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYBREAK.path)))
+                }
             }
         }
-
 
     }
 }

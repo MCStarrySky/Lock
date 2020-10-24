@@ -6,6 +6,7 @@ import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.sct.easylib.util.BasicUtil
 import org.sct.lock.data.LockData
 import org.sct.lock.enumeration.ConfigType
 import org.sct.lock.enumeration.LangType
@@ -28,7 +29,7 @@ class BlockBreakListener : Listener {
         val doorBelow = Location(e.player.world, BlockX.toDouble(), (BlockY + 1).toDouble(), BlockZ.toDouble()).block
         if (checkDoor(e, block) || checkDoor(e, doorAbove) || checkDoor(e, doorBelow) || checkSign(e, e.block)) {
             e.isCancelled = true
-            e.player.sendMessage(Lang.getString(LangType.LANG_DENYBREAK.path))
+            e.player.sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYBREAK.path)))
         }
     }
 
