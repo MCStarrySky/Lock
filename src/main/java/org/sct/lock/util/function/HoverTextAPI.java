@@ -1,6 +1,7 @@
 package org.sct.lock.util.function;
 
 import org.bukkit.Location;
+import org.sct.easylib.EasyLib;
 import org.sct.easylib.util.reflectutil.Reflections;
 import org.sct.easylib.util.reflectutil.VersionChecker;
 
@@ -41,8 +42,9 @@ public class HoverTextAPI {
 
     private Object EnumHoverActionShowText;
 
+    //todo 修复1.16.5不能使用的bug
     public HoverTextAPI() {
-        Reflections reflections = new Reflections();
+        Reflections reflections = new Reflections(EasyLib.getInstance());
         try {
             craftWorld = reflections.getBukkitClass("CraftWorld");
             worldServer = reflections.getMinecraftClass("WorldServer");
