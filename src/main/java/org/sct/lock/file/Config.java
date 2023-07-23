@@ -1,8 +1,9 @@
 package org.sct.lock.file;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.sct.easylib.util.BasicUtil;
+import org.sct.lock.util.BasicUtil;
 import org.sct.lock.Lock;
+import taboolib.platform.util.BukkitPluginKt;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class Config {
     private static FileConfiguration getConfig() {
-        return Lock.getInstance().getConfig();
+        return BukkitPluginKt.getBukkitPlugin().getConfig();
     }
 
     public static String getString(String path) {
@@ -23,12 +24,17 @@ public class Config {
     }
 
     public static void reload() {
-        Lock.getInstance().reloadConfig();
+        BukkitPluginKt.getBukkitPlugin().reloadConfig();
     }
 
     public static List<String> getStringList(String path) {
         reload();
         return BasicUtil.convert(getConfig().getStringList(path));
+    }
+
+    public static boolean getBoolean(String path) {
+        reload();
+        return getConfig().getBoolean(path);
     }
 
     public static double getDouble(String path) {

@@ -3,14 +3,23 @@ package org.sct.lock.util.function;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.block.SignChangeEvent;
-import org.sct.easylib.util.BasicUtil;
+import org.bukkit.persistence.PersistentDataAdapterContext;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.sct.lock.LockAPI;
+import org.sct.lock.UtilsKt;
+import org.sct.lock.util.BasicUtil;
 import org.sct.lock.Lock;
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Config;
-import org.sct.lock.file.Lang;
+import taboolib.platform.util.BukkitLangKt;
+import taboolib.platform.util.BukkitPluginKt;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,12 +28,12 @@ import java.util.Map;
  */
 
 public class SignProcessUtil {
-    private static final HoverTextAPI hoverTextAPI = new HoverTextAPI();
 
     public static void processSign(SignChangeEvent e) {
         /*如果世界不匹配,返回*/
         if (!LocationUtil.checkWorld(e.getBlock().getLocation())) {
-            e.getPlayer().sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYWORLD.getPath())));
+            BukkitLangKt.sendLang(e.getPlayer(), "Language-DenyWorld");
+           // e.getPlayer().sendMessage(BasicUtil.convert(Lang.getString(LangType.LANG_DENYWORLD.getPath())));
             return;
         }
 
@@ -102,13 +111,23 @@ public class SignProcessUtil {
             buffer.append(effectReplace);
         }
 
-        Location location = e.getBlock().getLocation();
-        Bukkit.getScheduler().runTaskLater(Lock.getInstance(), () -> {
-            hoverTextAPI.saveText(location, buffer.toString());
-        }, 1);
-    }
 
-    public static HoverTextAPI getHoverTextAPI() {
-        return hoverTextAPI;
+        final PersistentDataContainer pdc = e.getBlock().getChunk().getPersistentDataContainer();
+        final PersistentDataAdapterContext ctx = pdc.getAdapterContext();
+        final PersistentDataContainer newPdc = ctx.newPersistentDataContainer();
+        final List<PersistentDataContainer> pdcList =
+                new ArrayList<>(Arrays.asList(pdc.getOrDefault(LockAPI.LOCK, PersistentDataType.TAG_CONTAINER_ARRAY, new PersistentDataContainer[]{})));
+        newPdc.set(LockAPI.LOCATION, PersistentDataType.STRING, UtilsKt.parseToString(UtilsKt.toRoundedLocation(e.getBlock().getLocation())));
+        newPdc.set(LockAPI.LOCKCONDITION, PersistentDataType.STRING, buffer.toString());
+        newPdc.set(LockAPI.LOCKUSER, PersistentDataType.STRING, e.getPlayer().getUniqueId().toString());
+        pdcList.add(newPdc);
+        pdc.set(LockAPI.LOCK, PersistentDataType.TAG_CONTAINER_ARRAY, pdcList.toArray(new PersistentDataContainer[0]));
+
+
+        //Location location = e.getBlock().getLocation();
+       // Bukkit.getScheduler().runTaskLater(BukkitPluginKt.getBukkitPlugin(), () -> {
+       //
+       //     hoverTextAPI.saveText(location, buffer.toString());
+      //  }, 1);
     }
 }

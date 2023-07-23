@@ -1,6 +1,7 @@
 package org.sct.lock.util.function;
 
 import com.google.common.collect.Maps;
+import kotlin.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -8,17 +9,22 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.sct.easylib.util.BasicUtil;
-import org.sct.lock.Lock;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.sct.lock.LockAPI;
+import org.sct.lock.UtilsKt;
+import org.sct.lock.util.BasicUtil;
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.enumeration.Direction;
-import org.sct.lock.enumeration.LangType;
 import org.sct.lock.file.Config;
-import org.sct.lock.file.Lang;
+import taboolib.platform.util.BukkitLangKt;
+import taboolib.platform.util.BukkitPluginKt;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author LovesAsuna
@@ -53,9 +59,9 @@ public class LockUtil {
                 default:
             }
             // 存入玩家-牌子坐标
-            LockData.INSTANCE.getPlayerSignLocation().putIfAbsent(e.getPlayer(), location);
+            LockData.INSTANCE.getPlayerSignLocation().forcePut(e.getPlayer(), location);
             // 存入玩家-门坐标
-            LockData.INSTANCE.getPlayerDoorLocation().putIfAbsent(e.getPlayer(), new Location(world, x, lowY, z));
+            LockData.INSTANCE.getPlayerDoorLocation().forcePut(e.getPlayer(), new Location(world, x, lowY, z));
         }
     }
 
@@ -96,7 +102,15 @@ public class LockUtil {
      * @return 条件
      **/
     public static String getConditions(Block block) {
-        String orign = SignProcessUtil.getHoverTextAPI().getText(block.getLocation());
+       // String orign = SignProcessUtil.getHoverTextAPI().getText(block.getLocation());
+      //  Sign sign = (Sign) block.getState();
+       // String orign = sign.getLine(3);
+        final PersistentDataContainer pdc = block.getChunk().getPersistentDataContainer();
+        final PersistentDataContainer[] pdcArray = pdc.getOrDefault(LockAPI.LOCK, PersistentDataType.TAG_CONTAINER_ARRAY, new PersistentDataContainer[]{});
+        final Optional<PersistentDataContainer> optPdc = Arrays.stream(pdcArray)
+                .filter(p -> p.getOrDefault(LockAPI.LOCATION, PersistentDataType.STRING, "").equals(UtilsKt.parseToString(block.getLocation()))).findFirst();
+        if (!optPdc.isPresent()) return "";
+        String orign = optPdc.get().getOrDefault(LockAPI.LOCKCONDITION, PersistentDataType.STRING, "");
         String empty = BasicUtil.convert(Config.getString(ConfigType.SETTING_EMPTYREPLACE.getPath()));
         String money = BasicUtil.convert(Config.getString(ConfigType.SETTING_FLAGMONEY.getPath()));
         String effect = BasicUtil.convert(Config.getString(ConfigType.SETTING_EFFECTREPLACE.getPath()));
@@ -166,10 +180,11 @@ public class LockUtil {
         if (LockData.INSTANCE.getAddStatus().get("door")) {
             doorList.add(e.getClickedBlock().getLocation().getBlock().getType().toString());
             Config.setStringList(ConfigType.SETTING_DOORTYPE.getPath(), doorList);
-            Lock.getInstance().saveConfig();
+            BukkitPluginKt.getBukkitPlugin().saveConfig();
             LockData.INSTANCE.getAddStatus().put("door", false);
-            e.getPlayer().sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPESUCCESS.getPath()), "%type", "DOOR")));
-            ;
+            BukkitLangKt.sendLang(e.getPlayer(), "AddTypeSuccess", new Pair<>("DOOR", "type"));
+            //e.getPlayer().sendMessage(BasicUtil.convert(BasicUtil.replace(Lang.getString(LangType.LANG_ADDTYPESUCCESS.getPath()), "%type", "DOOR")));
+          //  ;
             e.setCancelled(true);
             return true;
         }

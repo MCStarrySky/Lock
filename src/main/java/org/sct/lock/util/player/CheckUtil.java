@@ -3,7 +3,7 @@ package org.sct.lock.util.player;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
-import org.sct.easylib.util.BasicUtil;
+import org.sct.lock.util.BasicUtil;
 import org.sct.lock.data.LockData;
 import org.sct.lock.enumeration.ConfigType;
 import org.sct.lock.file.Config;
@@ -51,10 +51,10 @@ public class CheckUtil {
     private static void storeData(Player player, Block door, Block sign) {
         if (player != null) {
             //玩家交互的门(忽视高度)
-            LockData.INSTANCE.getPlayerDoorLocation().put(player, door.getLocation());
+            LockData.INSTANCE.getPlayerDoorLocation().forcePut(player, door.getLocation());
 
             //存入玩家交互的门上方的牌子
-            LockData.INSTANCE.getPlayerSignLocation().put(player, sign.getLocation());
+            LockData.INSTANCE.getPlayerSignLocation().forcePut(player, sign.getLocation());
         }
     }
 
